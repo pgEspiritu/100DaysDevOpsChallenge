@@ -73,7 +73,7 @@ john:x:1001:1001::/home/john:/sbin/nologin
 
 ## ✅ Task Complete!
 
-![Task 1 - Linux User Setup with Non-Interactive Shell](image/Task%201%20-%20Linux%20User%20Setup%20with%20Non-Interactive%20Shell.png)
+![Task 1 - Linux User Setup with Non-Interactive Shell](images/Task%201%20-%20Linux%20User%20Setup%20with%20Non-Interactive%20Shell.png)
 
 You can now type `exit` to disconnect from App Server 1 and return to the jump host.
 
