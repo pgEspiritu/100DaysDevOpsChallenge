@@ -34,6 +34,15 @@ On each server, open the SSH config file:
 ```bash
 sudo vi /etc/ssh/sshd_config
 ```
+> Description:
+
+| Part              | Description                                                                                                                      |
+|-------------------|----------------------------------------------------------------------------------------------------------------------------------|
+| `sudo`            | Runs the command with superuser (root) privileges. Required because `/etc/ssh/sshd_config` is a system configuration file that may be restricted to root access. |
+| `grep`            | A command-line utility that searches for lines that match a pattern.                                                             |
+| `PermitRootLogin` | This is the pattern `grep` is looking for — specifically, lines containing the text `"PermitRootLogin"`.                         |
+| `/etc/ssh/sshd_config` | The file being searched — this is the SSH server configuration file, which controls how the SSH daemon (`sshd`) behaves.    |
+
 
 Locate the line:
 
