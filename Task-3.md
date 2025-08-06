@@ -34,14 +34,14 @@ On each server, open the SSH config file:
 ```bash
 sudo vi /etc/ssh/sshd_config
 ```
-> Description:
 
-| Part              | Description                                                                                                                      |
-|-------------------|----------------------------------------------------------------------------------------------------------------------------------|
-| `sudo`            | Runs the command with superuser (root) privileges. Required because `/etc/ssh/sshd_config` is a system configuration file that may be restricted to root access. |
-| `grep`            | A command-line utility that searches for lines that match a pattern.                                                             |
-| `PermitRootLogin` | This is the pattern `grep` is looking for — specifically, lines containing the text `"PermitRootLogin"`.                         |
-| `/etc/ssh/sshd_config` | The file being searched — this is the SSH server configuration file, which controls how the SSH daemon (`sshd`) behaves.    |
+> Description
+
+| Part                  | Description                                                                 |
+|-----------------------|-----------------------------------------------------------------------------|
+| `sudo`                | Runs the command with superuser (root) privileges — necessary to edit system files. |
+| `vi`                  | Launches the `vi` text editor (or `vim`, if available).                     |
+| `/etc/ssh/sshd_config`| Opens the SSH daemon configuration file for editing.                        |
 
 
 Locate the line:
@@ -75,6 +75,15 @@ Run the following command to apply changes:
 ```bash
 sudo systemctl restart sshd
 ```
+> Description:
+
+| Part                   | Description                                                                 |
+|------------------------|-----------------------------------------------------------------------------|
+| `sudo`                 | Runs the command with superuser (root) privileges — required to manage system services. |
+| `systemctl`            | A utility used to examine and control the `systemd` system and service manager. |
+| `restart`              | Tells `systemctl` to **stop and then start** the specified service.          |
+| `sshd`                 | Refers to the **SSH daemon** — the background service that handles incoming SSH connections. |
+
 
 > ✅ Repeat Steps 2–4 on all three app servers.
 
@@ -86,6 +95,16 @@ To confirm the change:
 ```bash
 sudo grep PermitRootLogin /etc/ssh/sshd_config
 ```
+
+> Description:
+
+| Part              | Description                                                                                                                      |
+|-------------------|----------------------------------------------------------------------------------------------------------------------------------|
+| `sudo`            | Runs the command with superuser (root) privileges. Required because `/etc/ssh/sshd_config` is a system configuration file that may be restricted to root access. |
+| `grep`            | A command-line utility that searches for lines that match a pattern.                                                             |
+| `PermitRootLogin` | This is the pattern `grep` is looking for — specifically, lines containing the text `"PermitRootLogin"`.                         |
+| `/etc/ssh/sshd_config` | The file being searched — this is the SSH server configuration file, which controls how the SSH daemon (`sshd`) behaves.    |
+
 
 Expected output:
 
