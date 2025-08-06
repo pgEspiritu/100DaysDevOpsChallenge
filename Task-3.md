@@ -87,7 +87,8 @@ PermitRootLogin no
 
 ## ✅ Task Complete!
 
-Configuring Each Server:
+Configuring Each Server
+
 Server 1:
 ![Server 1](images/Day3.1.JPG)
 
@@ -96,3 +97,10 @@ Server 2:
 
 Server 3:
 ![Server 3](images/Day3.3.JPG)
+
+Permission Line from the SSH config file:
+![Config File](images/Day3.5.JPG)
+
+Verification of Permission Changes:
+![Permission Changes](images/Day3.4.JPG)
+
