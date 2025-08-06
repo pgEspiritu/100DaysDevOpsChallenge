@@ -89,10 +89,10 @@ PermitRootLogin no
 
 Configuring Each Server:
 Server 1:
-![Server 1](images/Day3.1.jpg)
+![Server 1](images/Day3.1.JPG)
 
 Server 2:
-![Server 2](images/Day3.2.jpg)
+![Server 2](images/Day3.2.JPG)
 
 Server 3:
-![Server 3](images/Day3.3.jpg)
+![Server 3](images/Day3.3.JPG)
