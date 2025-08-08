@@ -1,5 +1,5 @@
 # 🧪 100 Days of DevOps – Day 4  
-## ✅ Task 4: Grant Executable Permissions to Script for All Users
+## ✅ Task 4: Script Execution Permissions
 
 ---
 
