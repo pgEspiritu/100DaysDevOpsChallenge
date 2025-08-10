@@ -113,12 +113,8 @@ ssh-copy-id banner@stapp03
 |---------------|-------------|
 | `ssh-copy-id` | A script that installs your **public SSH key** on a remote server for passwordless login. |
 
----
-
 #### Purpose
 Automatically appends your **public key** to the `~/.ssh/authorized_keys` file on a remote server, enabling you to connect without entering a password each time.
-
----
 
 How It Works
 1. Reads your **public key** file (default: `~/.ssh/id_rsa.pub`).
