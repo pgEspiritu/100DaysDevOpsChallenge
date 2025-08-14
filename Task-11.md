@@ -133,7 +133,7 @@ From the Jump Host, copy the `ROOT.war` file to App Server 2:
 On Jump Host:
 
 ```bash
-scp /tmp/ROOT.war steve@stapp02:/tmp/
+scp /tmp/ROOT.war banner@stapp03:/tmp/
 ```
 
 ### Description:
@@ -142,7 +142,7 @@ scp /tmp/ROOT.war steve@stapp02:/tmp/
 |------|-------------|
 | `scp` | Securely copies files between local and remote systems over SSH. |
 | `/tmp/ROOT.war` | The source file to be copied (a WAR file located in the local `/tmp` directory). |
-| `steve@stapp02` | Specifies the remote username (`steve`) and remote host (`stapp02`) to which the file will be copied. |
+| `banner@stapp03` | Specifies the remote username (`banner`) and remote host (`stapp03`) to which the file will be copied. |
 | `:/tmp/` | The destination directory on the remote server where the file will be placed. |
 
 **Purpose:**
@@ -166,10 +166,66 @@ sudo mv /tmp/ROOT.war /usr/share/tomcat/webapps/
 **Purpose:**
 This command moves the `ROOT.war` file from the local `/tmp` directory to Tomcat’s `webapps` directory, making it available for deployment.
 
+check if file is extracted
+```bash
+ls -l /usr/share/tomcat/webapps/
+```
+> You should see both ROOT.war and a ROOT/ directory after Tomcat restarts.
+
+since the output shown:
+```text
+total 24 drwxr-xr-x 3 tomcat tomcat 4096 Aug 14 02:40 ROOT
+-rw-r--r-- 1 banner banner 4529 Aug 14 02:45 ROOT.war
+drwxr-xr-x 16 root root 4096 Aug 14 02:40 docs
+drwxr-xr-x 6 root tomcat 4096 Aug 14 02:40 host-manager
+drwxr-xr-x 6 root tomcat 4096 Aug 14 02:40 manager
+```
+> your ROOT.war is owned by banner:banner, but Tomcat runs under the tomcat user. That means Tomcat might not be able to properly extract or serve the .war file, causing the “application is not setup correctly” issue.
+
+fix it:
+  a. Give the Tomcat user ownership of the .war and extracted directory:
+  ```bash
+  sudo chown -R tomcat:tomcat /usr/share/tomcat/webapps/ROOT.war /usr/share/tomcat/webapps/ROOT
+  ```
+  ### Description
+
+  | Part | Description |
+  |------|-------------|
+  | `sudo` | Runs the command with superuser privileges, required to change file ownership in system directories. |
+  | `chown` | Changes the ownership of files and directories. |
+  | `-R` | Applies the ownership change recursively to all files and subdirectories. |
+  | `tomcat:tomcat` | Sets the owner to `tomcat` and the group to `tomcat`. |
+  | `/usr/share/tomcat/webapps/ROOT.war` | The WAR file for the Tomcat ROOT application. |
+  | `/usr/share/tomcat/webapps/ROOT` | The extracted directory of the Tomcat ROOT application. |
+
+  **Purpose:**
+  This command changes the owner and group of both the `ROOT.war` file and its extracted `ROOT` directory to `tomcat`, ensuring the Tomcat process has proper permissions to run the application.
+  
+  b. Restart Tomcat so it re-deploys:
+  ```bash
+  sudo systemctl restart tomcat
+  ```
+
 ---
 
 ### ▶️ Step 6: Start and Enable Tomcat
 
+Confirm Tomcat is Installed and Running
+```bash
+sudo systemctl status tomcat
+```
+
+### Descrption
+| Part | Description |
+|------|-------------|
+| `sudo` | Runs the command with superuser privileges, required to check service status on protected system services. |
+| `systemctl` | The command-line utility to control the `systemd` system and service manager. |
+| `status tomcat` | Displays the current status of the Tomcat service, including whether it is running, stopped, or has errors. |
+
+**Purpose:**
+This command checks and displays detailed information about the Tomcat service, such as its active state, process ID, uptime, and recent log messages.
+
+Start and Enable Tomcat
 ```bash
 sudo systemctl start tomcat
 sudo systemctl enable tomcat
@@ -190,9 +246,9 @@ The first command starts the Tomcat service right away, while the second command
 ---
 
 ### 🧪 Step 7: Test the Deployment
-From App Server 2:
+From App Server 3:
 ```bash
-curl http://stapp02:8084
+curl http://stapp03:6000
 ```
 
 > You should see the HTML output from the deployed application.
@@ -202,4 +258,9 @@ From Jump Host:
 curl http://stapp02:8084
 ```
 
+---
+
+## ✅ Task Complete!
+
+Tomcat is now running on port `6000`, and the ROOT.war application is deployed and accessible via the base URL.
 
