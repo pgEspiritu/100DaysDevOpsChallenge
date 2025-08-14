@@ -43,7 +43,7 @@ Enter the password when prompted:
 BigGr33n
 ```
 
-![Task 11 - Install and Configure Tomcat Server.1](images2/Day-11.1.png)
+![Task 11 - Install and Configure Tomcat Server.1](images_2/Day-11.1.png)
 
 ---
 
@@ -54,7 +54,7 @@ Update packages and install Tomcat:
 sudo yum install -y tomcat tomcat-webapps tomcat-admin-webapps tomcat-docs-webapp
 ```
 
-![Task 11 - Install and Configure Tomcat Server.2](images2/Day-11.2.png)
+![Task 11 - Install and Configure Tomcat Server.2](images_2/Day-11.2.png)
 
 ### Description
 
@@ -107,7 +107,7 @@ Change `8080` to `8086`:
 ```
 > Save and exit (Esc → :wq → Enter).
 
-![Task 11 - Install and Configure Tomcat Server.3](images2/Day-11.3.png)
+![Task 11 - Install and Configure Tomcat Server.3](images_2/Day-11.3.png)
 
 ---
 
@@ -119,7 +119,7 @@ Make sure the Tomcat webapps directory exists:
 sudo mkdir -p /usr/share/tomcat/webapps
 ```
 
-![Task 11 - Install and Configure Tomcat Server.4](images2/Day-11.4.png)
+![Task 11 - Install and Configure Tomcat Server.4](images_2/Day-11.4.png)
 
 ### Description
 
@@ -144,7 +144,7 @@ On Jump Host:
 scp /tmp/ROOT.war banner@stapp03:/tmp/
 ```
 
-![Task 11 - Install and Configure Tomcat Server.5](images2/Day-11.5.png)
+![Task 11 - Install and Configure Tomcat Server.5](images_2/Day-11.5.png)
 
 ### Description:
 
@@ -231,7 +231,7 @@ fix it:
   The first command ensures the ROOT.war file is owned by the Tomcat user and group, and the second 
   command sets safe permissions so that Tomcat can read the file while preventing unauthorized modifications by other users.
 
-![Task 11 - Install and Configure Tomcat Server.6](images2/Day-11.6.png)
+![Task 11 - Install and Configure Tomcat Server.6](images_2/Day-11.6.png)
 
 ---
 
@@ -247,7 +247,7 @@ If needed, install a compatible JDK:
 sudo yum install -y java-11-openjdk
 ```
 
-![Task 11 - Install and Configure Tomcat Server.7](images2/Day-11.7.png)
+![Task 11 - Install and Configure Tomcat Server.7](images_2/Day-11.7.png)
 
 ### Description
 | Part              | Description                                                                                    |
@@ -275,7 +275,7 @@ Confirm Tomcat is Installed and Running
 sudo systemctl status tomcat
 ```
 
-![Task 11 - Install and Configure Tomcat Server.8](images2/Day-11.8.png)
+![Task 11 - Install and Configure Tomcat Server.8](images_2/Day-11.8.png)
 
 ### Description
 | Part | Description |
@@ -293,7 +293,7 @@ sudo systemctl start tomcat
 sudo systemctl enable tomcat
 ```
 
-![Task 11 - Install and Configure Tomcat Server.9](images2/Day-11.9.png)
+![Task 11 - Install and Configure Tomcat Server.9](images_2/Day-11.9.png)
 
 ### Description
 
@@ -328,4 +328,4 @@ curl http://stapp03:8086
 
 Tomcat is now running on port `8086`, and the ROOT.war application is deployed and accessible via the base URL.
 
-![Task 11 - Install and Configure Tomcat Server.10](images2/Day-11.10.png)
+![Task 11 - Install and Configure Tomcat Server.10](images_2/Day-11.10.png)
