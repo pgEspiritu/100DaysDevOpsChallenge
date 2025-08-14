@@ -8,10 +8,10 @@ which they are planning to deploy on one of the app servers in Stratos DC. After
 they have decided to use the tomcat application server. Based on the requirements mentioned below complete the task:
 
 a. Install tomcat server on App Server 3.
-b. Configure it to run on port 6000.
+b. Configure it to run on port 8086.
 c. There is a ROOT.war file on Jump host at location /tmp.
 
-Deploy it on this tomcat server and make sure the webpage works directly on base URL i.e curl http://stapp03:6000
+Deploy it on this tomcat server and make sure the webpage works directly on base URL i.e curl http://stapp03:8086
 ````
 ---
 
@@ -20,11 +20,11 @@ Deploy it on this tomcat server and make sure the webpage works directly on base
 On **App Server 3**:
 
 1. Install **Tomcat**.
-2. Configure it to run on port **6000**.
+2. Configure it to run on port **8086**.
 3. Deploy `ROOT.war` (found on Jump Host at `/tmp`) so the webpage works at:
 
 ```bash
-curl http://stapp03:6000
+curl http://stapp03:8086
 ```
 
 ---
@@ -43,6 +43,8 @@ Enter the password when prompted:
 BigGr33n
 ```
 
+![Task 11 - Install and Configure Tomcat Server.1](images2/Day-11.1.png)
+
 ---
 
 ### 📦 Step 2: Install Tomcat
@@ -51,6 +53,8 @@ Update packages and install Tomcat:
 ```bash
 sudo yum install -y tomcat tomcat-webapps tomcat-admin-webapps tomcat-docs-webapp
 ```
+
+![Task 11 - Install and Configure Tomcat Server.2](images2/Day-11.2.png)
 
 ### Description
 
@@ -96,12 +100,14 @@ Find this line:
 <Connector port="8080" protocol="HTTP/1.1"
 ```
 
-Change `8080` to `6000`:
+Change `8080` to `8086`:
 
 ```xml
-<Connector port="6000" protocol="HTTP/1.1"
+<Connector port="8086" protocol="HTTP/1.1"
 ```
 > Save and exit (Esc → :wq → Enter).
+
+![Task 11 - Install and Configure Tomcat Server.3](images2/Day-11.3.png)
 
 ---
 
@@ -112,6 +118,8 @@ Make sure the Tomcat webapps directory exists:
 ```bash
 sudo mkdir -p /usr/share/tomcat/webapps
 ```
+
+![Task 11 - Install and Configure Tomcat Server.4](images2/Day-11.4.png)
 
 ### Description
 
@@ -136,19 +144,39 @@ On Jump Host:
 scp /tmp/ROOT.war banner@stapp03:/tmp/
 ```
 
+![Task 11 - Install and Configure Tomcat Server.5](images2/Day-11.5.png)
+
 ### Description:
 
 | Part | Description |
 |------|-------------|
 | `scp` | Securely copies files between local and remote systems over SSH. |
 | `/tmp/ROOT.war` | The source file to be copied (a WAR file located in the local `/tmp` directory). |
-| `banner@stapp03` | Specifies the remote username (`banner`) and remote host (`stapp03`) to which the file will be copied. |
+| `steve@stapp02` | Specifies the remote username (`banner`) and remote host (`stapp03`) to which the file will be copied. |
 | `:/tmp/` | The destination directory on the remote server where the file will be placed. |
 
 **Purpose:**
 This command securely copies the `ROOT.war` file from the local `/tmp` directory to the `/tmp` directory on the remote server `stapp02` using the `steve` account.
 
 On App Server 2:
+
+remove first old files:
+```bash
+sudo rm -rf /usr/share/tomcat/webapps/ROOT
+```
+
+### Description
+
+| Part                             | Description                                                                                 |
+| -------------------------------- | ------------------------------------------------------------------------------------------- |
+| `sudo`                           | Runs the command with superuser privileges, required to delete files in system directories. |
+| `rm`                             | Removes files or directories.                                                               |
+| `-r`                             | Recursively deletes the directory and its contents.                                         |
+| `-f`                             | Forces deletion without prompting for confirmation.                                         |
+| `/usr/share/tomcat/webapps/ROOT` | The target directory for removal, which is the extracted Tomcat ROOT application.           |
+
+**purpose:**
+This command forcefully deletes the Tomcat ROOT application directory and all its contents, commonly used when redeploying a new version of the application.
 
 ```bash
 sudo mv /tmp/ROOT.war /usr/share/tomcat/webapps/
@@ -174,48 +202,82 @@ ls -l /usr/share/tomcat/webapps/
 
 since the output shown:
 ```text
-total 24 drwxr-xr-x 3 tomcat tomcat 4096 Aug 14 02:40 ROOT
--rw-r--r-- 1 banner banner 4529 Aug 14 02:45 ROOT.war
-drwxr-xr-x 16 root root 4096 Aug 14 02:40 docs
-drwxr-xr-x 6 root tomcat 4096 Aug 14 02:40 host-manager
-drwxr-xr-x 6 root tomcat 4096 Aug 14 02:40 manager
+total 24
+-rw-r--r--  1 banner banner 4529 Aug 14 10:58 ROOT.war
+drwxr-xr-x 16 root   root   4096 Aug 14 10:52 docs
+drwxr-xr-x  6 root   tomcat 4096 Aug 14 10:52 host-manager
+drwxr-xr-x  6 root   tomcat 4096 Aug 14 10:52 manager
 ```
-> your ROOT.war is owned by banner:banner, but Tomcat runs under the tomcat user. That means Tomcat might not be able to properly extract or serve the .war file, causing the “application is not setup correctly” issue.
+> your ROOT.war is owned by tomcat:tomcat, then it is correct if not,
+> If it is owned by banner:banner but Tomcat runs under the tomcat user. That means Tomcat might not be able to properly extract or serve the .war file, causing the “application is not setup correctly” issue.
 
 fix it:
   a. Give the Tomcat user ownership of the .war and extracted directory:
   ```bash
-  sudo chown -R tomcat:tomcat /usr/share/tomcat/webapps/ROOT.war /usr/share/tomcat/webapps/ROOT
+  sudo chown tomcat:tomcat /usr/share/tomcat/webapps/ROOT.war
+  sudo chmod 644 /usr/share/tomcat/webapps/ROOT.war
   ```
   ### Description
 
   | Part | Description |
   |------|-------------|
-  | `sudo` | Runs the command with superuser privileges, required to change file ownership in system directories. |
-  | `chown` | Changes the ownership of files and directories. |
-  | `-R` | Applies the ownership change recursively to all files and subdirectories. |
-  | `tomcat:tomcat` | Sets the owner to `tomcat` and the group to `tomcat`. |
+  | `sudo` | Runs the command with superuser privileges, required to modify system files. |
+  | `chown tomcat:tomcat` | Sets the owner to `tomcat` and the group to `tomcat`. |
   | `/usr/share/tomcat/webapps/ROOT.war` | The WAR file for the Tomcat ROOT application. |
-  | `/usr/share/tomcat/webapps/ROOT` | The extracted directory of the Tomcat ROOT application. |
+  | `chmod 644` | Sets the file permissions to read/write for owner, and read-only for group and others. |
+
 
   **Purpose:**
-  This command changes the owner and group of both the `ROOT.war` file and its extracted `ROOT` directory to `tomcat`, ensuring the Tomcat process has proper permissions to run the application.
-  
-  b. Restart Tomcat so it re-deploys:
-  ```bash
-  sudo systemctl restart tomcat
-  ```
+  The first command ensures the ROOT.war file is owned by the Tomcat user and group, and the second 
+  command sets safe permissions so that Tomcat can read the file while preventing unauthorized modifications by other users.
+
+![Task 11 - Install and Configure Tomcat Server.6](images2/Day-11.6.png)
 
 ---
 
-### ▶️ Step 6: Start and Enable Tomcat
+### 📦 Step 6: Check JAVA Version
+> If the ROOT.war was compiled for Java 11+ but the system uses Java 1.8, it won’t deploy correctly:
+
+```bash
+java -version
+```
+If needed, install a compatible JDK:
+
+```bash
+sudo yum install -y java-11-openjdk
+```
+
+![Task 11 - Install and Configure Tomcat Server.7](images2/Day-11.7.png)
+
+### Description
+| Part              | Description                                                                                    |
+| ----------------- | ---------------------------------------------------------------------------------------------- |
+| `sudo`            | Runs the command with superuser privileges, required to install packages system-wide.          |
+| `yum`             | The package manager used in RHEL, CentOS, and Fedora to install, update, and manage software.  |
+| `install`         | The `yum` subcommand that installs the specified package.                                      |
+| `-y`              | Automatically answers "yes" to any prompts during installation.                                |
+| `java-11-openjdk` | Installs **Java OpenJDK 11**, an open-source implementation of the Java Development Kit (JDK). |
+
+**Purpose:**
+This command installs Java 11 on your system, which is required to run Java-based applications like Apache Tomcat.
+
+then Restart Tomcat so it re-deploys:
+```bash
+sudo systemctl restart tomcat
+```
+
+---
+
+### ▶️ Step 7: Start and Enable Tomcat
 
 Confirm Tomcat is Installed and Running
 ```bash
 sudo systemctl status tomcat
 ```
 
-### Descrption
+![Task 11 - Install and Configure Tomcat Server.8](images2/Day-11.8.png)
+
+### Description
 | Part | Description |
 |------|-------------|
 | `sudo` | Runs the command with superuser privileges, required to check service status on protected system services. |
@@ -231,6 +293,8 @@ sudo systemctl start tomcat
 sudo systemctl enable tomcat
 ```
 
+![Task 11 - Install and Configure Tomcat Server.9](images2/Day-11.9.png)
+
 ### Description
 
 | Part | Description |
@@ -245,22 +309,23 @@ The first command starts the Tomcat service right away, while the second command
 
 ---
 
-### 🧪 Step 7: Test the Deployment
-From App Server 3:
+### 🧪 Step 8: Test the Deployment
+From App Server 2:
 ```bash
-curl http://stapp03:6000
+curl http://stapp03:8086
 ```
 
 > You should see the HTML output from the deployed application.
 
 From Jump Host:
 ```bash
-curl http://stapp02:8084
+curl http://stapp03:8086
 ```
 
 ---
 
 ## ✅ Task Complete!
 
-Tomcat is now running on port `6000`, and the ROOT.war application is deployed and accessible via the base URL.
+Tomcat is now running on port `8086`, and the ROOT.war application is deployed and accessible via the base URL.
 
+![Task 11 - Install and Configure Tomcat Server.10](images2/Day-11.10.png)
