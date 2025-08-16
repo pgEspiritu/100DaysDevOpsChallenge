@@ -5,21 +5,21 @@
 ```text
 We have one of our websites up and running on our Nautilus infrastructure in Stratos DC.
 Our security team has raised a concern that right now Apache’s port
-i.e 5033 is open for all since there is no firewall installed on these hosts.
+i.e 8089 is open for all since there is no firewall installed on these hosts.
 So we have decided to add some security layer for these hosts and after discussions
 and recommendations we have come up with the following requirements:
 
 1. Install iptables and all its dependencies on each app host.
-2. Block incoming port 5033 on all apps for everyone except for LBR host.
+2. Block incoming port 8089 on all apps for everyone except for LBR host.
 3. Make sure the rules remain, even after system reboot.
 ```
 
 ---
 
 ### ✅ Task Description
-We have Apache running on port 5033. Security requirements:
+We have Apache running on port 8089. Security requirements:
 - Install iptables on each App Host.
-- Block incoming traffic to port 5033 for everyone except LBR host.
+- Block incoming traffic to port 8089 for everyone except LBR host.
 - Ensure rules persist after reboot.
 
 ### LBR Host Details
@@ -83,25 +83,30 @@ sudo iptables -F
 ### 🔐 Step 4: Add Basic Rules
 
 ```bash
-# Allow loopback traffic
+# Allow loopback
 sudo iptables -A INPUT -i lo -j ACCEPT
 
-# Allow established and related connections
+# Allow established connections
 sudo iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
 
-# Allow SSH access
+# Allow SSH
 sudo iptables -A INPUT -p tcp --dport 22 -j ACCEPT
 
-# Allow only LBR host to access Apache port 5033
-sudo iptables -A INPUT -p tcp -s 172.16.238.14 --dport 5033 -j ACCEPT
+# Allow Apache port 8089 only from LBR host
+sudo iptables -A INPUT -p tcp -s 172.16.238.14 --dport 8089 -j ACCEPT
 
-# Drop all other access to port 5033
-sudo iptables -A INPUT -p tcp --dport 5033 -j DROP
+# Drop all other traffic to 8089
+sudo iptables -A INPUT -p tcp --dport 8089 -j DROP
 
-# Set default policies
+# Default policies
 sudo iptables -P INPUT DROP
 sudo iptables -P FORWARD DROP
 sudo iptables -P OUTPUT ACCEPT
+
+# Save the rules so they persist after reboot
+sudo service iptables save
+sudo systemctl enable iptables
+sudo systemctl start iptables
 ```
 
 #### Description
@@ -120,15 +125,15 @@ sudo iptables -P OUTPUT ACCEPT
 | | `--dport 22` | Destination port 22 (SSH). |
 | | `-j ACCEPT` | Accepts these packets. |
 | **Purpose** | | Allows **SSH access** to the server. |
-| `sudo iptables -A INPUT -p tcp -s 172.16.238.14 --dport 5033 -j ACCEPT` | `-p tcp` | Matches TCP packets. |
+| `sudo iptables -A INPUT -p tcp -s 172.16.238.14 --dport 8089 -j ACCEPT` | `-p tcp` | Matches TCP packets. |
 | | `-s 172.16.238.14` | Source IP address filter (LBR host). |
-| | `--dport 5033` | Destination port 5033 (Apache service). |
+| | `--dport 8089` | Destination port 8089 (Apache service). |
 | | `-j ACCEPT` | Accepts these packets. |
-| **Purpose** | | Only allows access to **port 5033** from the specific LBR host. |
-| `sudo iptables -A INPUT -p tcp --dport 5033 -j DROP` | `-p tcp` | Matches TCP packets. |
-| | `--dport 5033` | Destination port 5033. |
+| **Purpose** | | Only allows access to **port 8089** from the specific LBR host. |
+| `sudo iptables -A INPUT -p tcp --dport 8089 -j DROP` | `-p tcp` | Matches TCP packets. |
+| | `--dport 8089` | Destination port 8089. |
 | | `-j DROP` | Drops all other packets. |
-| **Purpose** | | Blocks **all other incoming traffic** to port 5033. |
+| **Purpose** | | Blocks **all other incoming traffic** to port 8089. |
 | `sudo iptables -P INPUT DROP` | `-P INPUT` | Sets default policy for INPUT chain. |
 | | `DROP` | Drops any incoming traffic that does not match previous rules. |
 | **Purpose** | | Default deny all incoming traffic. |
@@ -142,7 +147,7 @@ sudo iptables -P OUTPUT ACCEPT
 
 **Purpose:**
 - Loopback and SSH are essential for system management.
-- Only the LBR host can reach Apache on port 5033.
+- Only the LBR host can reach Apache on port 8089.
 - All other incoming connections are blocked.
 
 ---
@@ -153,7 +158,6 @@ Ensure rules persist after reboot:
 ```bash
 sudo mkdir -p /etc/iptables
 sudo iptables-save | sudo tee /etc/iptables/rules.v4
-sudo iptables-save | sudo tee /etc/iptables/rules.v6
 ```
 
 #### Description
@@ -185,7 +189,7 @@ Systemd fails because input redirection < /etc/iptables/rules.v4 is a shell feat
 ```bash
 sudo tee /usr/local/sbin/restore-iptables.sh > /dev/null <<'EOF'
 #!/bin/bash
-/sbin/iptables-legacy-restore < /etc/iptables/rules.v4
+/sbin/iptables-restore < /etc/iptables/rules.v4
 EOF
 
 sudo chmod +x /usr/local/sbin/restore-iptables.sh
@@ -195,19 +199,21 @@ sudo chmod +x /usr/local/sbin/restore-iptables.sh
 Create a systemd service to restore rules on boot:
 
 ```bash
-sudo tee /etc/systemd/system/iptables-restore.service > /dev/null <<EOF
+sudo tee /etc/systemd/system/iptables-restore.service > /dev/null <<EOL
 [Unit]
-Description=Restore iptables rules
-Before=network.target
+Description=Restore iptables firewall rules
+Before=network-pre.target
+Wants=network-pre.target
 
 [Service]
 Type=oneshot
-ExecStart=/usr/local/sbin/restore-iptables.sh
+ExecStart=/sbin/iptables-restore /etc/iptables/rules.v4
+ExecReload=/sbin/iptables-restore /etc/iptables/rules.v4
 RemainAfterExit=yes
 
 [Install]
 WantedBy=multi-user.target
-EOF
+EOL
 ```
 
 #### Description
@@ -260,7 +266,7 @@ sudo systemctl status iptables-restore.service
 ### 4️⃣ Step 9: Test connectivity
 From jump host:
 ```bash
-curl http://stapp01:5033
+curl http://stapp01:8089
 ```
 - Only LBR host IP (e.g., 172.16.238.14) should reach Apache.
 - All other hosts should be blocked.
