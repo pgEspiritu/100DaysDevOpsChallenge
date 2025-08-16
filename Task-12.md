@@ -39,12 +39,18 @@ Enter the password when prompted:
 Ir0nM@n
 ```
 
+![Task 12 - ILinux Network Services.1](images_2/Day-12.1.png)
+
 ---
 
 ### 📦 Step 2: Check Apache Service Status
 ```bash
 sudo systemctl status httpd
 ```
+
+![Task 12 - ILinux Network Services.2](images_2/Day-12.2.png)
+![Task 12 - ILinux Network Services.3](images_2/Day-12.3.png)
+
 #### Description
 
 | Part | Description |
@@ -55,11 +61,13 @@ sudo systemctl status httpd
 
 > This command checks and displays detailed information about the Apache HTTP Server (httpd) service, such as its active state, process ID, uptime, and recent log messages.
 
-
 - If service is inactive, start it:
 ```bash
 sudo systemctl start httpd
 ```
+
+![Task 12 - ILinux Network Services.4](images_2/Day-12.4.png)
+
 #### Description
 
 | Part          | Description                                                                     |
@@ -91,6 +99,8 @@ sudo systemctl status httpd -l
 sudo journalctl -xeu httpd
 ```
 
+![Task 12 - ILinux Network Services.5](images_2/Day-12.5.png)
+
 #### Description
 | Part         | Description                                                                                      |
 | ------------ | ------------------------------------------------------------------------------------------------ |
@@ -112,6 +122,8 @@ Output:
 Syntax Ok
 ```
 
+![Task 12 - ILinux Network Services.6](images_2/Day-12.6.png)
+
 #### Description
 | Part         | Description                                                                                            |
 | ------------ | ------------------------------------------------------------------------------------------------------ |
@@ -128,6 +140,8 @@ Syntax Ok
 ```bash
 sudo netstat -tulnp | grep 5002
 ```
+
+![Task 12 - ILinux Network Services.7](images_2/Day-12.7.png)
 
 #### Description
 | Part      | Description                                                                                               |                                                                                          |
@@ -158,6 +172,8 @@ sudo systemctl disable sendmail
 ```
 > prevent sendmail from starting again
 
+![Task 12 - ILinux Network Services.8](images_2/Day-12.8.png)
+
 ---
 
 ### Issue already been fix. Try to start Apache Again
@@ -166,6 +182,8 @@ sudo systemctl disable sendmail
 sudo systemctl start httpd
 sudo systemctl enable httpd
 ```
+
+![Task 12 - ILinux Network Services.9](images_2/Day-12.9.png)
 
 ---
 
@@ -194,6 +212,8 @@ Then restart Apache:
 sudo systemctl restart httpd
 ```
 
+![Task 12 - ILinux Network Services.10](images_2/Day-12.10.png)
+
 ---
 
 ### 🔍 Step 6: Allow port 5002 through firewall using iptables
@@ -213,6 +233,8 @@ Since iptables-legacy is not installed, use the default iptables:
 sudo iptables -I INPUT -p tcp --dport 5002 -j ACCEPT
 sudo service iptables save
 ```
+
+![Task 12 - ILinux Network Services.11](images_2/Day-12.11.png)
 
 #### Description
 | Part                    | Description                                                                      |
@@ -240,6 +262,8 @@ From jump host:
 curl http://stapp01:5002
 ```
 > It both replied Apache Test Page in HTLM, it means the task is now resolved.
+
+![Task 12 - ILinux Network Services.12](images_2/Day-12.12.png)
 
 ---
 
