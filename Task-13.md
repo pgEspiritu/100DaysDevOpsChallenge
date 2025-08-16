@@ -5,21 +5,21 @@
 ```text
 We have one of our websites up and running on our Nautilus infrastructure in Stratos DC.
 Our security team has raised a concern that right now Apache’s port
-i.e 8088 is open for all since there is no firewall installed on these hosts.
+i.e 5033 is open for all since there is no firewall installed on these hosts.
 So we have decided to add some security layer for these hosts and after discussions
 and recommendations we have come up with the following requirements:
 
 1. Install iptables and all its dependencies on each app host.
-2. Block incoming port 8088 on all apps for everyone except for LBR host.
+2. Block incoming port 5033 on all apps for everyone except for LBR host.
 3. Make sure the rules remain, even after system reboot.
 ```
 
 ---
 
 ### ✅ Task Description
-We have Apache running on port 8088. Security requirements:
+We have Apache running on port 5033. Security requirements:
 - Install iptables on each App Host.
-- Block incoming traffic to port 8088 for everyone except LBR host.
+- Block incoming traffic to port 5033 for everyone except LBR host.
 - Ensure rules persist after reboot.
 
 ### LBR Host Details
@@ -92,11 +92,11 @@ sudo iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
 # Allow SSH access
 sudo iptables -A INPUT -p tcp --dport 22 -j ACCEPT
 
-# Allow only LBR host to access Apache port 8088
-sudo iptables -A INPUT -p tcp -s 172.16.238.14 --dport 8088 -j ACCEPT
+# Allow only LBR host to access Apache port 5033
+sudo iptables -A INPUT -p tcp -s 172.16.238.14 --dport 5033 -j ACCEPT
 
-# Drop all other access to port 8088
-sudo iptables -A INPUT -p tcp --dport 8088 -j DROP
+# Drop all other access to port 5033
+sudo iptables -A INPUT -p tcp --dport 5033 -j DROP
 
 # Set default policies
 sudo iptables -P INPUT DROP
@@ -120,15 +120,15 @@ sudo iptables -P OUTPUT ACCEPT
 | | `--dport 22` | Destination port 22 (SSH). |
 | | `-j ACCEPT` | Accepts these packets. |
 | **Purpose** | | Allows **SSH access** to the server. |
-| `sudo iptables -A INPUT -p tcp -s 172.16.238.14 --dport 8088 -j ACCEPT` | `-p tcp` | Matches TCP packets. |
+| `sudo iptables -A INPUT -p tcp -s 172.16.238.14 --dport 5033 -j ACCEPT` | `-p tcp` | Matches TCP packets. |
 | | `-s 172.16.238.14` | Source IP address filter (LBR host). |
-| | `--dport 8088` | Destination port 8088 (Apache service). |
+| | `--dport 5033` | Destination port 5033 (Apache service). |
 | | `-j ACCEPT` | Accepts these packets. |
-| **Purpose** | | Only allows access to **port 8088** from the specific LBR host. |
-| `sudo iptables -A INPUT -p tcp --dport 8088 -j DROP` | `-p tcp` | Matches TCP packets. |
-| | `--dport 8088` | Destination port 8088. |
+| **Purpose** | | Only allows access to **port 5033** from the specific LBR host. |
+| `sudo iptables -A INPUT -p tcp --dport 5033 -j DROP` | `-p tcp` | Matches TCP packets. |
+| | `--dport 5033` | Destination port 5033. |
 | | `-j DROP` | Drops all other packets. |
-| **Purpose** | | Blocks **all other incoming traffic** to port 8088. |
+| **Purpose** | | Blocks **all other incoming traffic** to port 5033. |
 | `sudo iptables -P INPUT DROP` | `-P INPUT` | Sets default policy for INPUT chain. |
 | | `DROP` | Drops any incoming traffic that does not match previous rules. |
 | **Purpose** | | Default deny all incoming traffic. |
@@ -142,7 +142,7 @@ sudo iptables -P OUTPUT ACCEPT
 
 **Purpose:**
 - Loopback and SSH are essential for system management.
-- Only the LBR host can reach Apache on port 8088.
+- Only the LBR host can reach Apache on port 5033.
 - All other incoming connections are blocked.
 
 ---
@@ -153,6 +153,7 @@ Ensure rules persist after reboot:
 ```bash
 sudo mkdir -p /etc/iptables
 sudo iptables-save | sudo tee /etc/iptables/rules.v4
+sudo iptables-save | sudo tee /etc/iptables/rules.v6
 ```
 
 #### Description
@@ -256,10 +257,17 @@ sudo systemctl status iptables-restore.service
   
 ---
 
-#### 4️⃣ Step 9: Test connectivity
+### 4️⃣ Step 9: Test connectivity
 From jump host:
 ```bash
-curl http://stapp01:8088
+curl http://stapp01:5033
 ```
 - Only LBR host IP (e.g., 172.16.238.14) should reach Apache.
 - All other hosts should be blocked.
+
+---
+
+### Connect to Each Server then Repeat Steps 2-9
+
+---
+
