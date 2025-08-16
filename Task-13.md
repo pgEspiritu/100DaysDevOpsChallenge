@@ -104,11 +104,7 @@ sudo iptables -P FORWARD DROP
 sudo iptables -P OUTPUT ACCEPT
 ```
 
-### Description
-
-## Bash Command Explanation: Configuring iptables for Secure Access
-
-### Commands and Breakdown
+#### Description
 
 | Command | Option/Flag | Description |
 |---------|------------|-------------|
@@ -116,39 +112,33 @@ sudo iptables -P OUTPUT ACCEPT
 | | `-i lo` | Matches the **loopback interface**. |
 | | `-j ACCEPT` | Accepts all packets matching this rule. |
 | **Purpose** | | Allows all **loopback traffic** within the system. |
-
 | `sudo iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT` | `-m state` | Enables **connection state matching**. |
 | | `--state ESTABLISHED,RELATED` | Matches packets that are part of **existing or related connections**. |
 | | `-j ACCEPT` | Accepts these packets. |
 | **Purpose** | | Ensures responses to outgoing connections are allowed. |
-
 | `sudo iptables -A INPUT -p tcp --dport 22 -j ACCEPT` | `-p tcp` | Matches TCP packets. |
 | | `--dport 22` | Destination port 22 (SSH). |
 | | `-j ACCEPT` | Accepts these packets. |
 | **Purpose** | | Allows **SSH access** to the server. |
-
 | `sudo iptables -A INPUT -p tcp -s 172.16.238.14 --dport 8088 -j ACCEPT` | `-p tcp` | Matches TCP packets. |
 | | `-s 172.16.238.14` | Source IP address filter (LBR host). |
 | | `--dport 8088` | Destination port 8088 (Apache service). |
 | | `-j ACCEPT` | Accepts these packets. |
 | **Purpose** | | Only allows access to **port 8088** from the specific LBR host. |
-
 | `sudo iptables -A INPUT -p tcp --dport 8088 -j DROP` | `-p tcp` | Matches TCP packets. |
 | | `--dport 8088` | Destination port 8088. |
 | | `-j DROP` | Drops all other packets. |
 | **Purpose** | | Blocks **all other incoming traffic** to port 8088. |
-
 | `sudo iptables -P INPUT DROP` | `-P INPUT` | Sets default policy for INPUT chain. |
 | | `DROP` | Drops any incoming traffic that does not match previous rules. |
 | **Purpose** | | Default deny all incoming traffic. |
-
 | `sudo iptables -P FORWARD DROP` | `-P FORWARD` | Sets default policy for FORWARD chain. |
 | | `DROP` | Drops all forwarded packets. |
 | **Purpose** | | Prevents packet forwarding through the server. |
-
 | `sudo iptables -P OUTPUT ACCEPT` | `-P OUTPUT` | Sets default policy for OUTPUT chain. |
 | | `ACCEPT` | Allows all outgoing packets. |
 | **Purpose** | | Lets the server send traffic freely. |
+
 
 **Purpose:**
 - Loopback and SSH are essential for system management.
