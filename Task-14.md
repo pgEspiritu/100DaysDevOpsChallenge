@@ -134,7 +134,7 @@ sudo firewall-cmd --permanent --add-port=5000/tcp
 sudo firewall-cmd --reload
 ```
 
-> Output: Firewall is not enabled
+> Output: Firewall is not enabled, therefore skip this part.
 
 ---
 
