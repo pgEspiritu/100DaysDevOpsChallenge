@@ -1,6 +1,6 @@
 # 🧪 100 Days of DevOps – Day 13
 
-## ✅ Task: Linux Network Services
+## ✅ Task: IPtables Installation And Configuration
 
 ```text
 We have one of our websites up and running on our Nautilus infrastructure in Stratos DC.
@@ -42,11 +42,20 @@ Enter the password when prompted:
 Ir0nM@n
 ```
 
+![Task 13 - IPtables Installation And Configuration.1](images_2/Day-13.1.png)
+
+---
+
 ### 🔁 Step 2: Install iptables
 
 ```bash
 sudo yum install -y iptables iptables-services iptables-utils
 ```
+
+![Task 13 - IPtables Installation And Configuration.2](images_2/Day-13.2.png)
+![Task 13 - IPtables Installation And Configuration.3](images_2/Day-13.3.png)
+![Task 13 - IPtables Installation And Configuration.4](images_2/Day-13.4.png)
+
 #### Description
 | Part                | Description                                                                               |
 | ------------------- | ----------------------------------------------------------------------------------------- |
@@ -108,6 +117,7 @@ sudo service iptables save
 sudo systemctl enable iptables
 sudo systemctl start iptables
 ```
+![Task 13 - IPtables Installation And Configuration.5](images_2/Day-13.5.png)
 
 #### Description
 
@@ -159,6 +169,9 @@ Ensure rules persist after reboot:
 sudo mkdir -p /etc/iptables
 sudo iptables-save | sudo tee /etc/iptables/rules.v4
 ```
+
+![Task 13 - IPtables Installation And Configuration.6](images_2/Day-13.6.png)
+![Task 13 - IPtables Installation And Configuration.7](images_2/Day-13.7.png)
 
 #### Description
 
@@ -216,6 +229,8 @@ WantedBy=multi-user.target
 EOL
 ```
 
+![Task 13 - IPtables Installation And Configuration.8](images_2/Day-13.8.png)
+
 #### Description
 
 | Part                                                            | Description                                                                                        |
@@ -245,6 +260,8 @@ sudo systemctl enable iptables-restore.service
 sudo systemctl start iptables-restore.service
 sudo systemctl status iptables-restore.service
 ```
+
+![Task 13 - IPtables Installation And Configuration.9](images_2/Day-13.9.png)
 
 #### Description
 | Part | Description |
@@ -277,3 +294,4 @@ curl http://stapp01:8089
 
 ---
 
+## ✅ Task Complete!
