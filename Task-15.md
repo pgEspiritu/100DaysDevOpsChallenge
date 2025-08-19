@@ -160,9 +160,9 @@ echo "Welcome!" | sudo tee /usr/share/nginx/html/index.html
 #### Description
 
 | Command                                     | Explanation                                                                                                                                                                     |                                                                                      |
-| ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
-| `echo "Welcome!"`                           | Prints the text **"Welcome!"** to standard output.                                                                                                                              |                                                                                      |
-| `|`                                          |  Sends the output of the left command (`echo`) as input to the right command (`tee`).              |
+| ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `echo "Welcome!"`                           | Prints the text **"Welcome!"** to standard output.                                                                  
+| `|`                                         |  Sends the output of the left command (`echo`) as input to the right command (`tee`).               |
 | `sudo tee /usr/share/nginx/html/index.html` | Runs `tee` with elevated privileges to **write the text into the file** `/usr/share/nginx/html/index.html`. If the file already exists, it will be overwritten with `Welcome!`. |                                                                                      |
 
 ---
