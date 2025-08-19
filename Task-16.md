@@ -50,7 +50,7 @@ then verify
 ```bash
 sudo systemctl status nginx
 ```
-> now, we cab see that nginx is active
+> now, we can see that nginx is active
 
 ---
 
@@ -64,21 +64,65 @@ sudo vi /etc/nginx/nginx.conf
 Inside the http { ... } block, add upstream and server configuration:
 ```nginx
 http {
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+
+    access_log  /var/log/nginx/access.log  main;
+
+    sendfile            on;
+    tcp_nopush          on;
+    tcp_nodelay         on;
+    keepalive_timeout   65;
+    types_hash_max_size 4096;
+
+    include             /etc/nginx/mime.types;
+    default_type        application/octet-stream;
+
+    # Load modular configuration files
+    include /etc/nginx/conf.d/*.conf;
+
+    # ✅ Upstream block for Apache backends (port 8082)
     upstream app_servers {
-        server stapp01:80;
-        server stapp02:80;
-        server stapp03:80;
+        server stapp01:8082;
+        server stapp02:8082;
+        server stapp03:8082;
     }
 
+    # ✅ Server block for load balancing
     server {
-        listen 80;
+        listen       80;
+        listen       [::]:80;
+        server_name  _;
 
         location / {
             proxy_pass http://app_servers;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
         }
+
+        root /usr/share/nginx/html;
+
+        include /etc/nginx/default.d/*.conf;
+
+        error_page 404 /404.html;
+        location = /404.html { }
+
+        error_page 500 502 503 504 /50x.html;
+        location = /50x.html { }
     }
 }
 ```
+> but before that, check first the port of the Apache, login first with each server, then type this
+
+```bash
+sudo grep -i listen /etc/httpd/conf/httpd.conf
+```
+
+> since the output is: `Listen 8082`, then the Apache port to use is 8082.
+
 
 ---
 
