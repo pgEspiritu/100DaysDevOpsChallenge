@@ -36,6 +36,8 @@ password
 Mischi3f
 ```
 
+![Task 16 - Install and Configure Nginx as an LBR.1](images_3/Day-16.1.png)
+
 ---
 
 ### 🔁 Step 2: Install & Enable Nginx
@@ -46,11 +48,17 @@ sudo systemctl start nginx
 sudo systemctl enable nginx
 ```
 
+![Task 16 - Install and Configure Nginx as an LBR.2](images_3/Day-16.2.png)
+![Task 16 - Install and Configure Nginx as an LBR.3](images_3/Day-16.3.png)
+![Task 16 - Install and Configure Nginx as an LBR.4](images_3/Day-16.4.png)
+
 then verify
 ```bash
 sudo systemctl status nginx
 ```
 > now, we can see that nginx is active
+
+![Task 16 - Install and Configure Nginx as an LBR.4](images_3/Day-16.5.png)
 
 ---
 
@@ -115,6 +123,7 @@ http {
     }
 }
 ```
+
 > but before that, check first the port of the Apache, login first with each server, then type this
 
 ```bash
@@ -123,6 +132,8 @@ sudo grep -i listen /etc/httpd/conf/httpd.conf
 
 > since the output is: `Listen 8082`, then the Apache port to use is 8082.
 
+![Task 16 - Install and Configure Nginx as an LBR.6](images_3/Day-16.6.png)
+![Task 16 - Install and Configure Nginx as an LBR.7](images_3/Day-16.7.png)
 
 ---
 
@@ -132,6 +143,8 @@ sudo grep -i listen /etc/httpd/conf/httpd.conf
 sudo nginx -t
 sudo systemctl restart nginx
 ```
+
+![Task 16 - Install and Configure Nginx as an LBR.8](images_3/Day-16.8.png)
 
 ---
 
@@ -147,6 +160,14 @@ sudo systemctl status httpd
 sudo systemctl start httpd
 sudo systemctl enable httpd
 ```
+For Server 1 (Tony@Stapp01:
+![Task 16 - Install and Configure Nginx as an LBR.9](images_3/Day-16.9.png)
+
+For Server 2 (Steve@Stapp02)
+![Task 16 - Install and Configure Nginx as an LBR.10](images_3/Day-16.10.png)
+
+For Server 3 (Banner@Stapp03)
+![Task 16 - Install and Configure Nginx as an LBR.11](images_3/Day-16.11.png)
 
 ---
 
@@ -162,6 +183,11 @@ or by IP:
 ```bash
 curl http://<LBR-IP-Adress>
 ```
+
+![Task 16 - Install and Configure Nginx as an LBR.12](images_3/Day-16.12.png)
+
+Static App Webpage:
+![Task 16 - Install and Configure Nginx as an LBR.13](images_3/Day-16.13.png)
 
 ---
 
