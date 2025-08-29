@@ -1,5 +1,5 @@
 # 🧪 100 Days of DevOps – Day 20
-## ✅ Task: Configure NGINX with PHP-FPM using Unix Socket
+## ✅ Task: Configure Nginx + PHP-FPM Using Unix Sock
 
 ```text
 The Nautilus application development team is planning to launch a new PHP-based application,
@@ -43,12 +43,17 @@ then log-in as root user
 sudo su -
 ```
 
+![Task 20 - Configure Nginx + PHP-FPM Using Unix Sock.1](images_3/Day-20.1.png)
+
 ---
 
 ### 🔁 Step 2: Install NGINX
 ```bash
 yum install -y nginx
 ```
+
+![Task 20 - Configure Nginx + PHP-FPM Using Unix Sock.2](images_3/Day-20.2.png)
+![Task 20 - Configure Nginx + PHP-FPM Using Unix Sock.3](images_3/Day-20.3.png)
 
 ---
 
@@ -102,12 +107,17 @@ to this
       }
 ```
 
+![Task 20 - Configure Nginx + PHP-FPM Using Unix Sock.4](images_3/Day-20.4.png)
+
+
 then reload and check the status of the nginx
 ```bash
 systemctl restart nginx
 systemctl status nginx
 ```
 > nginx is now active (running)
+
+![Task 20 - Configure Nginx + PHP-FPM Using Unix Sock.5](images_3/Day-20.5.png)
 
 ---
 
@@ -118,14 +128,22 @@ cat /etc/os-release
 ```
 > CentOS Stream version 9 is our OS
 
+![Task 20 - Configure Nginx + PHP-FPM Using Unix Sock.6](images_3/Day-20.6.png)
+
 Ensure your system is up to date by running the following command:
 ```bash
 dnf update
 ```
+
+![Task 20 - Configure Nginx + PHP-FPM Using Unix Sock.8](images_3/Day-20.8.png)
+
+
 Install the Remi repository by running the following command:
 ```bash
 dnf install -y https://rpms.remirepo.net/enterprise/remi-release-9.rpm
 ```
+
+![Task 20 - Configure Nginx + PHP-FPM Using Unix Sock.9](images_3/Day-20.9.png)
 
 Check the available PHP modules and enable the Remi repository 8.1
 ```bash
@@ -133,21 +151,28 @@ dnf module list php
 dnf module enable php:remi-8.1
 ```
 
+![Task 20 - Configure Nginx + PHP-FPM Using Unix Sock.10](images_3/Day-20.10.png)
+
 install PHP core components:
 ```bash
 dnf install php81 php81-php-fpm php81-php-cli
 ```
+![Task 20 - Configure Nginx + PHP-FPM Using Unix Sock.11](images_3/Day-20.11.png)
 
 install PHP PHP-FPM
 ```bash
 dnf install -y php php-fpm
 ```
 
+![Task 20 - Configure Nginx + PHP-FPM Using Unix Sock.12](images_3/Day-20.12.png)
+
 then verify the version
 ```bash
 php -v
 ```
 > Now the remo repository version is 8.1
+
+![Task 20 - Configure Nginx + PHP-FPM Using Unix Sock.13](images_3/Day-20.13.png)
 
 Check this site for guide in installing PHP 8.1 in CentOS 9
 > [https://reintech.io/blog/setting-up-php-fpm-centos-9](https://reintech.io/blog/setting-up-php-fpm-centos-9) &
@@ -157,7 +182,7 @@ Check this site for guide in installing PHP 8.1 in CentOS 9
 
 ### ⚙️ Step 5: Configure PHP-FPM to Use Unix Socket
 
-Edit /etc/php-fpm.d/www.conf
+edit /etc/php-fpm.d/www.conf
 ```bash
 vi /etc/php-fpm.d/www.conf
 ```
@@ -169,6 +194,8 @@ user = nginx
 group = nginx
 ```
 
+![Task 20 - Configure Nginx + PHP-FPM Using Unix Sock.14](images_3/Day-20.14.png)
+
 then add this to the configuration file: /etc/nginx/nginx.conf
 ```ini
     location ~ \.php$ {
@@ -179,6 +206,8 @@ then add this to the configuration file: /etc/nginx/nginx.conf
     }
 ```
 
+![Task 20 - Configure Nginx + PHP-FPM Using Unix Sock.16](images_3/Day-20.16.png)
+
 ---
 
 ### 🔁 Step 6: Check status of PHP-FPM then restart NGINX and PHP-FPM
@@ -188,6 +217,8 @@ systemctl restart nginx
 systemctl restart php-fpm
 ```
 
+![Task 20 - Configure Nginx + PHP-FPM Using Unix Sock.16](images_3/Day-20.16.png)
+![Task 20 - Configure Nginx + PHP-FPM Using Unix Sock.17](images_3/Day-20.17.png)
 ---
 
 ### 🔁 Step 7: Verify from Jump Host
@@ -196,6 +227,8 @@ On Jump Host:
 curl http://stapp03:8099/index.php
 ```
 > It displays the website content (not in html raw file)
+
+![Task 20 - Configure Nginx + PHP-FPM Using Unix Sock.18](images_3/Day-20.18.png)
 
 ---
 
