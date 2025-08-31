@@ -31,7 +31,7 @@ password
 Bl@kW
 ```
 
-![Task 21 - Set Up Git Repository on Storage Server.1](images_3/Day-21.1.png)
+![Task 21 - Set Up Git Repository on Storage Server.1](images_3/Day-21.1.PNG)
 
 ---
 
