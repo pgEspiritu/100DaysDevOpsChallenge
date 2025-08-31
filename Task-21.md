@@ -40,7 +40,7 @@ Bl@kW
 sudo dnf install -y git
 ```
 
-![Task 21 - Set Up Git Repository on Storage Server.2](images_3/Day-21.2.png)
+![Task 21 - Set Up Git Repository on Storage Server.2](images_3/Day-21.2.PNG)
 
 #### Explanation of `sudo dnf install -y git`
 
@@ -57,7 +57,7 @@ Verify installation:
 git --version
 ```
 
-![Task 21 - Set Up Git Repository on Storage Server.3](images_3/Day-21.3.png)
+![Task 21 - Set Up Git Repository on Storage Server.3](images_3/Day-21.3.PNG)
 
 #### Explanation of `git --version`
 
@@ -75,7 +75,7 @@ cd /opt/ecommerce.git
 sudo git init --bare
 ```
 
-![Task 21 - Set Up Git Repository on Storage Server.4](images_3/Day-21.4.png)
+![Task 21 - Set Up Git Repository on Storage Server.4](images_3/Day-21.4.PNG)
 
 #### Command 1: `sudo mkdir -p /opt/ecommerce.git`
 
@@ -114,7 +114,7 @@ Check structure:
 ls -l /opt/ecommerce.git
 ```
 
-![Task 21 - Set Up Git Repository on Storage Server.5](images_3/Day-21.5.png)
+![Task 21 - Set Up Git Repository on Storage Server.5](images_3/Day-21.5.PNG)
 
 #### Explanation of `ls -l /opt/ecommerce.git`
 
@@ -144,7 +144,7 @@ Confirm type:
 git --git-dir=/opt/ecommerce.git status
 ```
 
-![Task 21 - Set Up Git Repository on Storage Server.6](images_3/Day-21.6.png)
+![Task 21 - Set Up Git Repository on Storage Server.6](images_3/Day-21.6.PNG)
 
 #### Explanation of `git --git-dir=/opt/ecommerce.git status`
 
