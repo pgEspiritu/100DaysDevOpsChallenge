@@ -5,8 +5,8 @@
 The Nautilus application development team was working on a git repository /usr/src/kodekloudrepos/beta
 present on Storage server in Stratos DC. However, they reported an issue with the recent commits being pushed to this repo.
 They have asked the DevOps team to revert repo HEAD to last commit. Below are more details about the task:
-1, In /usr/src/kodekloudrepos/beta git repository, revert the latest commit ( HEAD ) to the previous commit
-(JFYI the previous commit hash should be with initial commit message ).
+
+1. In /usr/src/kodekloudrepos/beta git repository, revert the latest commit ( HEAD ) to the previous commit (JFYI the previous commit hash should be with initial commit message ).
 2. Use revert beta message (please use all small letters for commit message) for the new revert commit.
 ```
 
@@ -38,6 +38,11 @@ Bl@kW
 cd /usr/src/kodekloudrepos/beta
 ```
 
+Check you’re inside a Git repo:
+```bash
+sudo git status
+```
+
 ---
 
 ### 🔁 Step 3: Check Commit History
@@ -47,26 +52,38 @@ sudo git log --oneline
 
 Expected Output:
 ```sql
-a3f5c12  Added feature X
-7c9d0b1  initial commit
+a1b2c3d Latest feature commit
+9f8e7d6 initial commit
 ```
+
+Here:
+- `a1b2c3d` → HEAD (latest commit we need to revert)
+- `9f8e7d6` → Previous commit (initial commit)
 
 ---
 
 ### 🔁 Step 4: Revert Latest Commit
 ```bash
-sudo git revert --no-edit HEAD
-```
-But since the task requires a specific commit message:
-```bash
-sudo git revert HEAD -m "revert beta"
+git revert HEAD --no-edit
 ```
 
-⚠️ Note: -m is used for merge commits; for a normal commit, just use -m with message:
+> ⚠️ By default, git revert opens an editor for commit message. To override and set a custom message:
+
 ```bash
-sudo git revert HEAD --no-edit
-sudo git commit --amend -m "revert beta"
+git revert HEAD -m "revert beta"
 ```
+
+(Some Git versions don’t support -m for message, so instead do this:)
+
+```bash
+git revert HEAD
+```
+
+When editor opens → replace the message with:
+```vi
+revert beta
+```
+Save & exit.
 
 ---
 
@@ -77,9 +94,9 @@ sudo git log --oneline
 
 Expected latest entry:
 ```sql
-c8f1e23  revert beta
-a3f5c12  Added feature X   (reverted)
-7c9d0b1  initial commit
+1a2b3c4 (HEAD -> master) revert beta
+a1b2c3d Added new feature
+e4f5g6h initial commit
 ```
 
 ---
