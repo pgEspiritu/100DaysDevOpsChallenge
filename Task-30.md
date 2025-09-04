@@ -72,6 +72,8 @@ We want to keep only:
 - 408f8d5 add data.txt file
 - 19673b9 initial commit
 
+![Task 30 - Git hard reset.1](images_5/Day-30.1.png)
+
 ---
 
 ### 🔁 Step 4: Reset History
@@ -99,6 +101,8 @@ pick 4937cab Test Commit10
 
 Save & exit.
 
+![Task 30 - Git hard reset.2](images_5/Day-30.2.png)
+
 ---
 
 ### 🔁 Step 5: Verify History
@@ -112,6 +116,8 @@ Expected Output:
 19673b9 initial commit
 ```
 
+![Task 30 - Git hard reset.3](images_5/Day-30.3.png)
+
 ---
 
 ### 🔁 Step 6: Push Changes
@@ -119,6 +125,8 @@ Since history was rewritten, force-push to remote:
 ```bash
 sudo git push origin master --force
 ```
+
+![Task 30 - Git hard reset.4](images_5/Day-30.4.png)
 
 ---
 
