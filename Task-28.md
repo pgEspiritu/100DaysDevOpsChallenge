@@ -100,6 +100,8 @@ yyyyyyy Previous master commit
 ```
 > ✅ Commit Update `info.txt` is now in `master`.
 
+![Task 28 - Git Cherry Pick.1](images_4/Day-28.1.PNG)
+
 ---
 
 ## ✅ Task Completed
