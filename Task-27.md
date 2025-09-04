@@ -43,6 +43,14 @@ Check you’re inside a Git repo:
 sudo git status
 ```
 
+#### Explanation of `sudo git status`
+
+| Part     | Meaning                                                                 |
+|----------|-------------------------------------------------------------------------|
+| `sudo`   | Runs with **superuser privileges** (repo is under `/usr/src`).          |
+| `git`    | The **Git command-line tool**.                                          |
+| `status` | Shows the status of the working directory and staging area.             |
+
 ---
 
 ### 🔁 Step 3: Check Commit History
@@ -60,6 +68,13 @@ Here:
 - `a1b2c3d` → HEAD (latest commit we need to revert)
 - `9f8e7d6` → Previous commit (initial commit)
 
+#### Explanation of `sudo git log --oneline`
+
+| Part        | Meaning                                                                 |
+|-------------|-------------------------------------------------------------------------|
+| `log`       | Displays the commit history.                                            |
+| `--oneline` | Condenses each commit to **1 line** (short hash + commit message).       |
+
 ---
 
 ### 🔁 Step 4: Revert Latest Commit
@@ -68,6 +83,12 @@ git revert HEAD --no-edit
 ```
 
 > ⚠️ By default, git revert opens an editor for commit message. To override and set a custom message:
+
+| Part        | Meaning                                                                 |
+|-------------|-------------------------------------------------------------------------|
+| `revert`    | Creates a **new commit** that undoes the changes introduced by a previous commit. |
+| `HEAD`      | Refers to the **latest commit** on the current branch.                  |
+| `--no-edit` | Uses the default commit message automatically (no editor opens).        |
 
 ```bash
 git revert HEAD -m "revert beta"
