@@ -120,6 +120,10 @@ a1b2c3d Added new feature
 e4f5g6h initial commit
 ```
 
+![Task 27 - Git Revert Some Changes.1](images_4/Day-27.1.png)
+![Task 27 - Git Revert Some Changes.2](images_4/Day-27.2.png)
+![Task 27 - Git Revert Some Changes.3](images_4/Day-27.3.png)
+
 ---
 
 ## ✅ Task Completed
