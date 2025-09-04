@@ -41,11 +41,28 @@ Bl@kW
 cd /usr/src/kodekloudrepos/ecommerce
 ```
 
+#### Explanation of `cd /usr/src/kodekloudrepos/ecommerce`
+
+| Part                               | Meaning                                                                 |
+|------------------------------------|-------------------------------------------------------------------------|
+| `cd`                               | Stands for **change directory**. Moves you into another folder.         |
+| `/usr/src/kodekloudrepos/ecommerce`| The **target directory** (in this case, the `ecommerce` working repository under `kodekloudrepos`). |
+
+
 Ensure you are on master
 ```bash
 sudo git checkout master
 ```
 > Output: `Already on 'master`
+
+#### Explanation of `sudo git checkout master`
+
+| Part      | Meaning                                                                 |
+|-----------|-------------------------------------------------------------------------|
+| `sudo`    | Runs the command with **superuser privileges** (needed since the repo is under `/usr/src`). |
+| `git`     | The **Git command-line tool**.                                          |
+| `checkout`| Switches branches or restores working tree files.                       |
+| `master`  | The name of the branch you want to switch to (the default branch in many repos). |
 
 ---
 
@@ -54,12 +71,31 @@ sudo git checkout master
 sudo git checkout -b datacenter
 ```
 
+#### Explanation of `sudo git checkout -b datacenter`
+
+| Part        | Meaning                                                                 |
+|-------------|-------------------------------------------------------------------------|
+| `sudo`      | Runs the command with **superuser privileges** (repo is under `/usr/src`). |
+| `git`       | The **Git command-line tool**.                                          |
+| `checkout`  | Used to **switch branches** or restore files.                           |
+| `-b`        | Creates a **new branch** before switching to it.                        |
+| `datacenter`| The **name of the new branch** being created.                           |
+
 ---
 
 ### 🔁 Step 4: Copy file into repo
 ```bash
 sudo cp /tmp/index.html .
 ```
+
+#### Explanation of `sudo cp /tmp/index.html .`
+
+| Part              | Meaning                                                                 |
+|-------------------|-------------------------------------------------------------------------|
+| `sudo`            | Runs the command with **superuser privileges** (needed if `/usr/src/...` requires root access). |
+| `cp`              | The **copy command** in Linux. Copies files or directories.             |
+| `/tmp/index.html` | The **source file** to be copied. Located in the temporary directory `/tmp`. |
+| `.`               | The **destination directory** — here it means "the current directory".  |
 
 ---
 
@@ -69,6 +105,25 @@ sudo git add index.html
 sudo git commit -m "Add index.html to datacenter branch"
 ```
 
+#### Command 1: `sudo git add index.html`
+
+| Part           | Meaning                                                                 |
+|----------------|-------------------------------------------------------------------------|
+| `sudo`         | Runs with **superuser privileges** (since repo is under `/usr/src`).    |
+| `git`          | The **Git command-line tool**.                                          |
+| `add`          | Stages files, preparing them to be included in the next commit.         |
+| `index.html`   | The specific file being staged.                                         |
+
+
+#### Command 2: `sudo git commit -m "Add index.html to datacenter branch"`
+
+| Part                              | Meaning                                                                 |
+|-----------------------------------|-------------------------------------------------------------------------|
+| `sudo`                            | Runs with **superuser privileges**.                                     |
+| `git`                             | The Git command-line tool.                                              |
+| `commit`                          | Records staged changes to the repository’s history.                     |
+| `-m "Add index.html to datacenter branch"` | Inline **commit message** describing the change.                   |
+
 ---
 
 ### 🔁 Step 6: Switch back to master and merge
@@ -76,6 +131,24 @@ sudo git commit -m "Add index.html to datacenter branch"
 sudo git checkout master
 sudo git merge datacenter
 ```
+
+#### Command 1: `sudo git checkout master`
+
+| Part     | Meaning                                                                 |
+|----------|-------------------------------------------------------------------------|
+| `sudo`   | Runs the command with **superuser privileges** (repo is under `/usr/src`). |
+| `git`    | The **Git command-line tool**.                                          |
+| `checkout master` | Switches the working directory to the `master` branch.         |
+
+
+#### Command 2: `sudo git merge datacenter`
+
+| Part       | Meaning                                                                 |
+|------------|-------------------------------------------------------------------------|
+| `sudo`     | Runs with superuser privileges.                                         |
+| `git`      | Git tool.                                                               |
+| `merge`    | Integrates changes from another branch into the current branch.         |
+| `datacenter` | The branch you want to merge into `master`.                          |
 
 ---
 
@@ -85,6 +158,30 @@ sudo git push origin master
 sudo git push origin datacenter
 ```
 
+#### Command 1: `sudo git push origin master`
+
+| Part          | Meaning                                                                 |
+|---------------|-------------------------------------------------------------------------|
+| `sudo`        | Runs the command with **superuser privileges** (repo is under `/usr/src`). |
+| `git`         | The **Git command-line tool**.                                          |
+| `push`        | Uploads local commits/branches to a remote repository.                  |
+| `origin`      | The default **remote name** (points to `/opt/media.git`).               |
+| `master`      | The **branch being pushed** to the remote repo.                         |
+
+👉 This updates the `master` branch on `origin` to include the merge you just did.  
+
+
+#### Command 2: `sudo git push origin datacenter`
+
+| Part          | Meaning                                                                 |
+|---------------|-------------------------------------------------------------------------|
+| `sudo`        | Superuser privileges (repo is under `/usr/src`).                        |
+| `git push`    | Pushes commits/branches to remote.                                      |
+| `origin`      | Remote repository (`/opt/media.git`).                                   |
+| `datacenter`  | Pushes the `datacenter` branch so it also exists on the remote.         |
+
+👉 This ensures that `datacenter` is also available in the central bare repo.  
+
 ---
 
 ### 🔁 Step 8: Verification
@@ -93,15 +190,44 @@ Check branch list:
 git branch -a
 ```
 
+#### Explanation of `git branch -a`
+
+| Part       | Meaning                                                                 |
+|------------|-------------------------------------------------------------------------|
+| `git`      | The **Git command-line tool**.                                          |
+| `branch`   | Lists, creates, or deletes branches.                                    |
+| `-a`       | Shows **all branches** (both local and remote).                         |
+
+
 Check commit log:
 ```bash
 git log --oneline --graph --all
 ```
 
+# Explanation of `git log --oneline --graph --all`
+
+| Part          | Meaning                                                                 |
+|---------------|-------------------------------------------------------------------------|
+| `git`         | The **Git command-line tool**.                                          |
+| `log`         | Shows the commit history.                                               |
+| `--oneline`   | Displays each commit in a **condensed, single-line format** (commit hash + message). |
+| `--graph`     | Adds an **ASCII graph** in the left margin, showing branches and merges. |
+| `--all`       | Shows commits from **all branches** (not just the current branch).       |
+
+
 Check remote branches:
 ```bash
 git ls-remote --heads origin
 ```
+
+#### Explanation of `git ls-remote --heads origin`
+
+| Part        | Meaning                                                                 |
+|-------------|-------------------------------------------------------------------------|
+| `git`       | The **Git command-line tool**.                                          |
+| `ls-remote` | Lists references (branches, tags, HEADs) available in a remote repo.    |
+| `--heads`   | Restricts output to **branch heads** only (ignores tags, etc.).          |
+| `origin`    | The name of the **remote repository** (in your case, `/opt/media.git`). |
 
 Expected:
 - Both master and datacenter exist on remote.
