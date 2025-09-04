@@ -103,6 +103,10 @@ sudo git push dev_apps master
 ```
 > This pushes the master branch from local repo → `dev_apps` remote (/opt/xfusioncorp_apps.git).
 
+
+![Task 26 - Git Manage Remotes.1](images_4/Day-26.1.PNG)
+![Task 26 - Git Manage Remotes.1](images_4/Day-26.2.PNG)
+
 ---
 
 ## ✅ Task Completed
