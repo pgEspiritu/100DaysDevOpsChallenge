@@ -88,6 +88,8 @@ git status
 git log --oneline --decorate --graph
 ```
 
+![Task 29 - Manage Git Pull Requests.1](images_5/Day-29.1.png)
+
 check details:
 ```bash
 git log --pretty=full
@@ -102,6 +104,8 @@ Commit: max <max@stratos.xfusioncorp.com>
     Added fox-and-grapes story
 ```
 
+![Task 29 - Manage Git Pull Requests.2](images_5/Day-29.2.png)
+
 --- 
 
 ### 🔁 Step 4: Open Gitea Portal
@@ -109,6 +113,8 @@ Commit: max <max@stratos.xfusioncorp.com>
 - Login as Max:
   - Username: max
   - Password: Max_pass123
+
+![Task 29 - Manage Git Pull Requests.3](images_5/Day-29.3.png)
  
 ---
 
@@ -120,11 +126,18 @@ Commit: max <max@stratos.xfusioncorp.com>
 - PR Title: `Added fox-and-grapes story`
 - Click Create Pull Request
 
+![Task 29 - Manage Git Pull Requests.4](images_5/Day-29.4.png)
+![Task 29 - Manage Git Pull Requests.5](images_5/Day-29.5.png)
+![Task 29 - Manage Git Pull Requests.6](images_5/Day-29.6.png)
+
 ---
 
 ### 🔁 Step 6: Assign Reviewer
 - In the PR page → Right panel → Reviewers
 - Add tom as reviewer
+
+![Task 29 - Manage Git Pull Requests.7](images_5/Day-29.7.png)
+![Task 29 - Manage Git Pull Requests.8](images_5/Day-29.8.png)
 
 ---
 
@@ -136,17 +149,28 @@ Commit: max <max@stratos.xfusioncorp.com>
 - Open the PR: Added fox-and-grapes story
 - Review → Approve → Merge
 
+![Task 29 - Manage Git Pull Requests.9](images_5/Day-29.9.png)
+![Task 29 - Manage Git Pull Requests.10](images_5/Day-29.10.png)
+![Task 29 - Manage Git Pull Requests.11](images_5/Day-29.11.png)
+![Task 29 - Manage Git Pull Requests.12](images_5/Day-29.12.png)
+
+
 ---
 
 ### 🔎 Verify Merge
 - Check master branch in repo:
   - Either in Gitea UI: Go to repo → Branch: master → confirm new file/story exists
+
+    ![Task 29 - Manage Git Pull Requests.14](images_5/Day-29.14.png)
+    
   - Or from terminal as Max:
     ```bash
     git checkout master
     git pull origin master
     ls -l
     ```
+
+     ![Task 29 - Manage Git Pull Requests.13](images_5/Day-29.13.png)
 
 ---
 
