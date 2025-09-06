@@ -52,8 +52,8 @@ This repository documents my daily progress through **Linux, Docker, Kubernetes,
 - **Day 29 (2025-09-04):** [Manage Git Pull Requests](task-29.md)  
 - **Day 30 (2025-09-04):** [Git Hard Reset](task-30.md)  
 - **Day 31 (2025-09-04):** [Git Stash](task-31.md)  
-- **Day 32:** [Git Rebase](task-32.md)  
-- **Day 33:** [Resolve Git Merge Conflicts](task-33.md)  
+- **Day 32 (2025-09-05):** [Git Rebase](task-32.md)  
+- **Day 33 (2025-09-05):** [Resolve Git Merge Conflicts](task-33.md)  
 - **Day 34:** [Git Hook](task-34.md)  
 
 ### 🔹 Docker & Containers  
