@@ -1,18 +1,15 @@
 # 🧪 100 Days of DevOps – Day 34
 ## ✅ Task: Git Hooks
 
-```
-The Nautilus application development team was working on a git repository /opt/cluster.git
-which is cloned under /usr/src/kodekloudrepos directory present on Storage server in Stratos DC.
-The team want to setup a hook on this repository, please find below more details:
+```text
+The Nautilus application development team was working on a git repository /opt/demo.git which is cloned under /usr/src/kodekloudrepos
+directory present on Storage server in Stratos DC. The team want to setup a hook on this repository, please find below more details:
 
 1. Merge the feature branch into the master branch`, but before pushing your changes complete below point.
-
 2. Create a post-update hook in this git repository so that whenever any changes are pushed to the master branch,
 it creates a release tag with name release-2023-06-15, where 2023-06-15 is supposed to be the current date.
 For example if today is 20th June, 2023 then the release tag must be release-2023-06-20.
 Make sure you test the hook at least once and create a release tag for today's release.
-
 3. Finally remember to push your changes.
 ```
 
@@ -20,12 +17,11 @@ Make sure you test the hook at least once and create a release tag for today's r
 
 Task
 - SSH into Storage Server
-- Navigate to /usr/src/kodekloudrepos/cluster
-- Checkout master and merge feature branch
-- Create a post-update hook in /opt/cluster.git/hooks
-- Hook should create a release tag with current date when master branch is pushed
-- Test by pushing master branch → confirm release tag created
-
+- Navigate to /opt/demo.git (bare repo)
+- Create hook that tags master commits with current date
+- Merge feature → master in clone repo (/usr/src/kodekloudrepos/apps)
+- Push master branch → triggers hook
+- Verify release tag is created
 ---
 
 ### 🔁 Step 1: SSH into Storage Server
@@ -43,17 +39,17 @@ Bl@kW
 
 ### 🔁 Step 2: Navigate to Repo
 
-Go to repo
+Go to bare repo
 ```bash
-cd /usr/src/kodekloudrepos/cluster
+cd /usr/src/kodekloudrepos/demo
 ```
 
-then check the status
+check status
 ```bash
 git status
 ```
 
-output: 
+Output:
 ```nginx
 On branch feature
 nothing to commit, working tree clean
@@ -63,7 +59,7 @@ nothing to commit, working tree clean
 
 ---
 
-### 🔁 Step 3: Merge Feature into Master
+### 🔁 Step 3: Merge feature → master
 
 ```bash
 sudo git checkout master
@@ -73,82 +69,102 @@ sudo git merge feature
 
 ---
 
-### 🔁 Step 4: Create Post-Update Hook
-Move to bare repo hooks folder:
+### 🔁 Step 4: Create the post-update hook in /opt/demo.git
+
+Navigate to the hooks directory:
 ```bash
-cd /opt/cluster.git/hooks
+cd /opt/demo.git/hooks
 ```
 
 ![Task 34 - Git Hooks.2](images_5/Day-34.2.png)
 
-Create hook:
+Open the post-update file:
 ```bash
 sudo vi post-update
 ```
 
-insert
+Enter this:
 ```bash
 #!/bin/bash
-branch=$(git rev-parse --symbolic --abbrev-ref HEAD)
-date=$(date +%F)
-tag="release-$date"
-
-if [ "$branch" = "master" ]; then
-  git tag -f "$tag"
-  git push origin "$tag"
-fi
+cd /opt/demo.git
+tag=release-$(date "+%Y-%m-%d")
+git tag $tag
 ```
 
 ![Task 34 - Git Hooks.3](images_5/Day-34.3.png)
-
-Make it executable:
+Go back to demo repo:
 ```bash
-sudo chmod +x post-update
+cd /usr/src/kodekloudrepos/demo
 ```
 
----
-
-### 🔁 Step 5: Push to Trigger Hook
-
-Back in working repo:
+then make vi file executable:
 ```bash
-cd /usr/src/kodekloudrepos/cluster
-sudo git push origin master
+sudo chmod +x /opt/demo.git/hooks/post-update
 ```
 
-Verify tags on remote:
+check the file:
 ```bash
-sudo git ls-remote --tags origin
+ls /opt/demo.git/hooks/
 ```
 
-Output
-```nginx
-903d1cdec93a1fd71d9653c07ebf08b7b8561246        refs/tags/release-2025-09-09
-```
-> The tag date is today's date (September 9, 2025)
+then the permission
+ls -al /opt/demo.git/hooks/
+
 
 ![Task 34 - Git Hooks.4](images_5/Day-34.4.png)
 
 ---
 
-## Explanation of Key Commands
+### 🔁 Step 5: Check the status and Push the merged branch to the bare repo
 
-| Command                         | Meaning                                                        |
-| ------------------------------- | -------------------------------------------------------------- |
-| `git checkout master`           | Switch to the master branch.                                   |
-| `git merge feature`             | Merge feature branch changes into master.                      |
-| `/opt/cluster.git/hooks`        | Directory where git hook scripts live in the **bare repo**.    |
-| `post-update`                   | Hook script executed after a push is made to the repository.   |
-| `date +%F`                      | Prints current date in `YYYY-MM-DD` format.                    |
-| `git tag -f release-YYYY-MM-DD` | Creates (or overwrites) a release tag with today’s date.       |
-| `git push origin master`        | Pushes master branch → triggers the `post-update` hook.        |
-| `git ls-remote --tags origin`   | Confirms that the release tag exists in the remote repository. |
+Check Status
+```bash
+sudo git status
+```
+
+then push 
+```bash
+sudo git push
+```
+
+![Task 34 - Git Hooks.5](images_5/Day-34.5.png)
+
+---
+
+### 🔁 Step 6: Verify the tag was created
+
+```bash
+sudo git tag
+sudo git log
+```
+
+![Task 34 - Git Hooks.6](images_5/Day-34.6.png)
+
+---
+
+
+## 🗝️ Explanation of Key Commands
+
+| Command                                | Description                                                                                     |
+| -------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `ssh user@host`                        | Connects to a remote server over SSH.                                                           |
+| `cd <path>`                            | Navigates to a directory.                                                                       |
+| `git status`                           | Shows the current branch, staged changes, and working directory status.                         |
+| `git checkout master`                  | Switches to the `master` branch.                                                                |
+| `git merge feature`                    | Merges changes from the `feature` branch into the current branch (`master`).                     |
+| `vi <file>`                            | Opens file in the `vi` text editor for editing.                                                 |
+| `chmod +x <file>`                      | Makes a file executable (needed for hooks to run).                                              |
+| `post-update` hook                     | Git server-side hook that runs after a push is received; used here to auto-create release tags. |
+| `git tag release-$(date "+%Y-%m-%d")`  | Creates a tag with today’s date in the format `release-YYYY-MM-DD`.                             |
+| `git push`                             | Uploads commits from the local repository to the remote bare repository.                        |
+| `git tag`                              | Lists tags in the current repository.                                                           |
+| `git log`                              | Shows commit history for the current branch.                                                    |
+| `ls -al`                               | Lists files in a directory with detailed permissions.                                           |
 
 ---
 
 ## ✅ Task Completed
-- Feature branch merged into master.
-- Post-update hook created in /opt/cluster.git/hooks/.
-- Pushing master triggered hook → auto release tag created (release-2025-09-04).
-- Verified tag exists in remote repository.
 
+- Created an update hook in /opt/apps.git/hooks.
+- Hook automatically creates a release tag with today’s date when master branch is updated.
+- Successfully merged feature → master, pushed, and confirmed tag was created.
