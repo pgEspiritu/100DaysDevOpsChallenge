@@ -69,6 +69,8 @@ ubuntu       latest    802541663949   3 weeks ago      78.1MB
 ```
 > Successfully created Docker image news:fusion
 
+![Task 39 - Create a Docker Image From Container.1](images_6/Day-39.1.png)
+
 ---
 
 ## ✅ Task Completed
