@@ -1,5 +1,5 @@
-🐳 100 Days of DevOps – Day 38
-✅ Task: Copy File to Docker Container
+# 🐳 100 Days of DevOps – Day 38
+## ✅ Task: Pull Docker Image
 
 ```text
 Nautilus project developers are planning to start testing on a new project.
@@ -65,7 +65,7 @@ busybox      local     44f1048931f5   11 months ago   1.46MB
 busybox      musl      44f1048931f5   11 months ago   1.46MB
 ```
 
-![Task 38 - Copy File to Docker Container.1](images_6/Day-38.1.png)
+![Task 38 - Pull Docker Image.1](images_6/Day-38.1.png)
 
 ---
 
