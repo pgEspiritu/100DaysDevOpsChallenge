@@ -67,6 +67,8 @@ CONTAINER ID   IMAGE          COMMAND                  CREATED          STATUS  
 8739411638c4   nginx:alpine   "/docker-entrypoint.…"   51 seconds ago   Up 50 seconds   80/tcp    nginx_3
 ```
 
+![Task 36 - Deploy Nginx Container on Application Server.1](images_6/Day-36.1.png)
+
 ---
 
 ## ✅ Task Completed
