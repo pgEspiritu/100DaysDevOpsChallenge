@@ -54,13 +54,13 @@ This repository documents my daily progress through **Linux, Docker, Kubernetes,
 - **Day 31 (2025-09-04):** [Git Stash](Task-31.md)  
 - **Day 32 (2025-09-05):** [Git Rebase](Task-32.md)  
 - **Day 33 (2025-09-05):** [Resolve Git Merge Conflicts](Task-33.md)  
-- **Day 34:** [Git Hook](Task-34.md)  
+- **Day 34 (2025-09-09):** [Git Hook](Task-34.md)  
 
 ### 🔹 Docker & Containers  
-- **Day 35:** [Install Docker Packages and Start Docker Service](Task-35.md)  
-- **Day 36:** [Deploy Nginx Container on Application Server](Task-36.md)  
-- **Day 37:** [Copy File to Docker Container](Task-37.md)  
-- **Day 38:** [Pull Docker Image](Task-38.md)  
+- **Day 35 (2025-09-09):** [Install Docker Packages and Start Docker Service](Task-35.md)  
+- **Day 36 (2025-09-11):** [Deploy Nginx Container on Application Server](Task-36.md)  
+- **Day 37 (2025-09-11):** [Copy File to Docker Container](Task-37.md)  
+- **Day 38 (2025-09-11):** [Pull Docker Image](Task-38.md)  
 - **Day 39:** [Create a Docker Image From Container](Task-39.md)  
 - **Day 40:** [Docker EXEC Operations](Task-40.md)  
 - **Day 41:** [Write a Dockerfile](Task-41.md)  
