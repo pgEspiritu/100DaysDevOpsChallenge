@@ -69,6 +69,8 @@ output:
 ```
 > successfully copied nautilus.txt.gpg from docker to host (Ubuntu)
 
+![Task 37 - Copy File to Docker Container.1](images_6/Day-37.1.png)
+
 ---
 
 ## ✅ Task Completed
