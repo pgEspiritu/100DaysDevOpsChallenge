@@ -179,7 +179,21 @@ Container kkloud will remain up since it’s already running under Docker
 
 ## 🗝️ Explanation of Key Commands – Docker EXEC Operations
 
-
+| Command                                            | Description                                                                                    |
+| -------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| `ssh banner@stapp03`                               | Connects to **App Server 3** in Stratos Datacenter using SSH with the user `banner`.           |
+| `sudo su`                                          | Switches to the **superuser (root)** account for elevated privileges.                          |
+| `docker ps`                                        | Lists all **running containers**, including their IDs, names, status, and ports.               |
+| `docker exec -it kkloud bash`                      | Opens an **interactive bash shell** inside the running container `kkloud`.                     |
+| `apt-get update`                                   | Updates the package list inside the container so the latest package versions can be installed. |
+| `apt-get install -y apache2`                       | Installs the **Apache2 web server** with auto-confirmation (`-y`).                             |
+| `apt-get install -y nano`                          | Installs **Nano editor**, since `vi` was unavailable in the container.                         |
+| `nano /etc/apache2/ports.conf`                     | Opens Apache’s port configuration file to edit the **listening port**.                         |
+| `nano /etc/apache2/sites-enabled/000-default.conf` | Opens the default site config to update its **virtual host port** from 80 to 8088.             |
+| `service apache2 restart`                          | Restarts Apache service to apply the new configuration changes.                                |
+| `service apache2 status`                           | Shows the **current running status** of Apache inside the container.                           |
+| `curl -I http://localhost:8088`                    | Sends an **HTTP HEAD request** to verify that Apache is responding on port `8088`.             |
+| `exit`                                             | Leaves the container shell, while keeping the container itself running.                        |
 
 
 ---
