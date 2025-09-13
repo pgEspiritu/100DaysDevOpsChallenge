@@ -1,4 +1,4 @@
-# 🧪 100 Days of DevOps – Day XX
+# 🧪 100 Days of DevOps – Day 32
 ## ✅ Task: Git Rebase
 
 ```task
@@ -37,8 +37,6 @@ password
 ```bash
 Bl@kW
 ```
-
----
 
 ---
 
