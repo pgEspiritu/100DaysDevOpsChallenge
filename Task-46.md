@@ -1,5 +1,5 @@
 # 🐳 100 Days of DevOps – Day 46
-## ✅ Task: Deploy PHP Web + MariaDB with Docker Compose
+## ✅ Task: Deploy an App on Docker Containers
 
 ```text
 The Nautilus Application development team recently finished development of one of the apps that they want to deploy on a containerized platform.
@@ -73,6 +73,8 @@ Create the docker-compose file:
 vi docker-compose.yml
 ```
 
+![Task 46 - Deploy an App on Docker Containers.1](images_7/Day-46.1.png)
+
 Paste this content:
 ```yaml
 version: '3.8'
@@ -104,6 +106,8 @@ services:
 
 save and exit (:wq!)
 
+![Task 46 - Deploy an App on Docker Containers.2](images_7/Day-46.2.png)
+
 ---
 
 ### 🔁 Step 3: Start Stack
@@ -112,6 +116,7 @@ From /opt/dba:
 ```bash
 docker compose up -d
 ```
+![Task 46 - Deploy an App on Docker Containers.3](images_7/Day-46.3.png)
 
 Check running containers:
 ```bash
@@ -127,6 +132,8 @@ CONTAINER ID   IMAGE            COMMAND                  CREATED              ST
 
 > successfully created php_web & mysql_web container
 
+![Task 46 - Deploy an App on Docker Containers.4](images_7/Day-46.4.png)
+
 ---
 
 ### 🔁 Step 4: Verify
@@ -135,6 +142,8 @@ CONTAINER ID   IMAGE            COMMAND                  CREATED              ST
 curl http://localhost:8086/
 ```
 > it returns PHP/Apache test page/app content from /var/www/html.
+
+![Task 46 - Deploy an App on Docker Containers.5](images_7/Day-46.5.png)
 
 ---
 
