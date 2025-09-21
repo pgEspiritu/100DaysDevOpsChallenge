@@ -1,5 +1,5 @@
 ## 🐳 100 Days of DevOps – Day 46
-# ✅ Task: Dockerize Python App & Deploy
+# ✅ Task: Docker Python App
 
 ```text
 A python app needed to be Dockerized, and then it needs to be deployed on App Server 1.
@@ -63,6 +63,8 @@ Create Dockerfile:
 vi Dockerfile
 ```
 
+![Task 47 - Docker Python App.1](images_7/Day-47.1.png)
+
 Insert the following:
 ```dockerfile
 # Use Python base image
@@ -89,6 +91,8 @@ CMD ["python", "server.py"]
 
 Save & exit.
 
+![Task 47 - Docker Python App.2](images_7/Day-47.2.png)
+
 ---
 
 ### 🔁 Step 3: Build Docker Image
@@ -105,6 +109,8 @@ docker build -t nautilus/python-app .
 ```bash
 docker run -d --name pythonapp_nautilus -p 8096:3002 nautilus/python-app
 ```
+
+![Task 47 - Docker Python App.3](images_7/Day-47.3.png)
 
 check container:
 ```bash
@@ -125,6 +131,24 @@ CONTAINER ID   IMAGE                 COMMAND              CREATED          STATU
 curl http://localhost:8096/
 ```
 > return the app’s response (from server.py).
+
+![Task 47 - Docker Python App.4](images_7/Day-47.4.png)
+
+---
+
+## 🗝️ Explanation of Key Commands – Docker Python App
+
+| Command                                                                    | Description                                                                                                             |
+| -------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `ssh tony@stapp01`                                                         | Connects to **App Server 1** in Stratos Datacenter with user `tony`.                                                    |
+| `sudo su`                                                                  | Switches to **root user** for elevated privileges.                                                                      |
+| `cd /python_app`                                                           | Navigates into the directory where the Dockerfile will be created.                                                      |
+| `vi Dockerfile`                                                            | Opens an editor to create the Dockerfile with instructions for building the Python app image.                           |
+| `docker build -t nautilus/python-app .`                                    | Builds a new Docker image from the Dockerfile in the current directory, tagging it as `nautilus/python-app`.            |
+| `docker run -d --name pythonapp_nautilus -p 8096:3002 nautilus/python-app` | Runs a container named **pythonapp\_nautilus** in detached mode, mapping **host port 8096** to **container port 3002**. |
+| `docker ps`                                                                | Lists running containers, confirming that the Python app container is active and exposing the correct port.             |
+| `curl http://localhost:8096/`                                              | Sends an HTTP request to test if the Python app is responding via port 8096 on the host.                                |
+
 
 ---
 
