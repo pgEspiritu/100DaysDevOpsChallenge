@@ -2,10 +2,9 @@
 ## ✅ Task: Deploy Applications with Kubernetes Deployments
 
 ```text
-The Nautilus DevOps team is delving into Kubernetes for app management.
-One team member needs to create a deployment following these details:
+The Nautilus DevOps team is delving into Kubernetes for app management. One team member needs to create a deployment following these details:
 
-Create a deployment named httpd to deploy the application httpd using the image httpd:latest (ensure to specify the tag)
+Create a deployment named nginx to deploy the application nginx using the image nginx:latest (ensure to specify the tag)
 
 Note: The kubectl utility on jump_host is set up to interact with the Kubernetes cluster.
 ```
@@ -13,32 +12,38 @@ Note: The kubectl utility on jump_host is set up to interact with the Kubernetes
 ---
 
 📝 Task List
-- Go to jump host
-- Create YAML manifest /tmp/pod-httpd.yaml
-- Apply manifest with kubectl
-- Verify pod & label
+- Write a deployment manifest file (YAML).
+- Apply it using kubectl.
+- Verify deployment and pods.
 
 ---
 
-### 🔁 Step 1: Create Pod YAML
+### 🔁 Step 1: Create Deployment YAML
 
 On the jump host:
 ```bash
-vi /tmp/pod-httpd.yaml
+vi /tmp/deploy-nginx.yaml
 ```
 
 Insert the following:
 ```yaml
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: pod-httpd
-  labels:
-    app: httpd_app
+  name: nginx
 spec:
-  containers:
-    - name: httpd-container
-      image: httpd:latest
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:latest
 ```
 
 Save & exit. (:wq!)
@@ -47,7 +52,7 @@ Save & exit. (:wq!)
 
 ### 🔁 Step 2: Deploy Pod
 ```bash
-kubectl apply -f /tmp/pod-httpd.yaml
+kubectl apply -f /tmp/deploy-nginx.yaml
 ```
 - `-f` = "filename"
 
@@ -57,26 +62,26 @@ kubectl apply -f /tmp/pod-httpd.yaml
 
 Check pod status:
 ```bash
-kubectl get pods
+kubectl get deployments
 ```
 
-Check label:
+Check pods created:
 ```bash
-kubectl get pod pod-httpd --show-labels
+kubectl get pods -l app=nginx
 ```
 
 output:
 ```nginx
-NAME        READY   STATUS    RESTARTS   AGE   LABELS
-pod-httpd   1/1     Running   0          62s   app=httpd_app
+NAME                     READY   STATUS    RESTARTS   AGE
+nginx-7bf8c77b5b-t824k   1/1     Running   0          2m20s
 ```
-> successfully created pod-httpd
+> successfully created nginx
 
 Check container inside pod:
 ```bash
-kubectl describe pod pod-httpd | grep -i image
+kubectl describe deployment nginx
 ```
-> verified image used = httpd:latest
+> verified image used =  nginx:latest
 
 ---
 
@@ -87,19 +92,19 @@ kubectl describe pod pod-httpd | grep -i image
 
 ## 🗝️ Explanation of Key Commands – Kubernetes Deployment
 
-| Command                                                  | Description                                                  |
-| -------------------------------------------------------- | ------------------------------------------------------------ |
-| `vi /tmp/deploy-httpd.yaml`                              | Opens a file to define the Deployment manifest.              |
-| `kubectl apply -f /tmp/deploy-httpd.yaml`                | Creates the Deployment as per the manifest.                  |
-| `kubectl get deployments`                                | Lists all Deployments, showing replicas and availability.    |
-| `kubectl get pods -l app=httpd_app`                      | Filters Pods created by the Deployment using label selector. |
-| `kubectl describe pod -l app=httpd_app \| grep -i image` | Confirms the container image being used (`httpd:latest`).    |
+| Command                                              | Description                                                                     |
+| ---------------------------------------------------- | ------------------------------------------------------------------------------- |
+| `vi /tmp/deploy-nginx.yaml`                          | Opens a file where you define the Deployment manifest for nginx.                |
+| `kubectl apply -f /tmp/deploy-nginx.yaml`            | Creates or updates the Deployment in the cluster as per the YAML file.          |
+| `kubectl get deployments`                            | Lists all Deployments, showing replica count, availability, and status.         |
+| `kubectl get pods -l app=nginx`                      | Filters and shows only Pods with the label `app=nginx` (from the Deployment).   |
+| `kubectl describe deployment nginx \| grep -i image` | Confirms the container image being used inside the Deployment (`nginx:latest`). |
+
 
 ---
 
 ## ✅ Task Completed
-- Pod pod-httpd created
-- Container httpd-container runs httpd:latest
-- Label app=httpd_app applied
+- Deployment named nginx exists.
+- At least 1 pod runs with image nginx:latest.
 
 
