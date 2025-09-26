@@ -69,7 +69,7 @@ kubectl get deployments
 
 ---
 
-![Task 52 - Rollback Kubernetes Deployment.1](images_8/Day-53.1.png)
+![Task 52 - Rollback Kubernetes Deployment.1](images_8/Day-52.1.png)
 
 ---
 
