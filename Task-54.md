@@ -133,12 +133,18 @@ exit
 ---
 
 ## 🗝️ Key Commands – Shared Volumes
-| Command                                           | Description                                            |
-| ------------------------------------------------- | ------------------------------------------------------ |
-| `kubectl apply -f /tmp/volume-share-xfusion.yaml` | Creates the pod with two containers and shared volume. |
-| `kubectl exec -it <pod> -c <container> -- bash`   | Opens a shell into the specified container.            |
-| `echo "data" > /tmp/beta/beta.txt`                | Creates a test file in container 1.                    |
-| `cat /tmp/apps/beta.txt`                          | Confirms file visibility in container 2.               |
+| Command                                                                       | Description                                                                                   |
+| ----------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `vi /tmp/volume-share-xfusion.yaml`                                           | Opens a new file where you define the Pod manifest (two containers + volume).                 |
+| `kubectl apply -f /tmp/volume-share-xfusion.yaml`                             | Creates the Pod in the cluster using the YAML definition.                                     |
+| `kubectl get pods`                                                            | Lists all Pods and shows their status. Here we verify both containers are running (`2/2`).    |
+| `kubectl exec -it volume-share-xfusion -c volume-container-xfusion-1 -- bash` | Opens an interactive shell inside the **first container** of the Pod.                         |
+| `echo "Shared volume test" > /tmp/beta/beta.txt`                              | Creates a file named `beta.txt` with text inside the shared volume path `/tmp/beta`.          |
+| `exit`                                                                        | Exits the container shell.                                                                    |
+| `kubectl exec -it volume-share-xfusion -c volume-container-xfusion-2 -- bash` | Opens an interactive shell inside the **second container** of the Pod.                        |
+| `cat /tmp/apps/beta.txt`                                                      | Displays the contents of the `beta.txt` file from the shared volume (mounted in `/tmp/apps`). |
+| `exit`                                                                        | Exits the second container shell.                                                             |
+
 
 ---
 
