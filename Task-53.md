@@ -42,12 +42,13 @@ kubectl get configmap
 ```
 > `nginx-config` is present
 
-
 then inspect
 ```bash
 kubectl describe configmap nginx-config
 ```
 > We can see that there is a comment “Set nginx to serve files from the shared volume!” , so the configuration file indicates that the root directory is “/var/www/html”
+
+![Task 53 - Resolve VolumeMounts Issue in Kubernetes.1](images_8/Day-53.1.png)
 
 ---
 
@@ -63,6 +64,10 @@ cat definition.yml
 ```
 > the volume mount of the nginx-container is `/usr/share/nginx/html`, change that to `/var/www/html`. There are two `/usr/share/nginx/html` that need to be changed.
 
+![Task 53 - Resolve VolumeMounts Issue in Kubernetes.2](images_8/Day-53.2.png)
+![Task 53 - Resolve VolumeMounts Issue in Kubernetes.3](images_8/Day-53.3.png)
+![Task 53 - Resolve VolumeMounts Issue in Kubernetes.4](images_8/Day-53.4.png)
+
 ---
 
 ### 🔁 Step 4: Edit the nginx.yaml file
@@ -70,6 +75,9 @@ cat definition.yml
 ```bash
 vi definition.yml
 ```
+
+![Task 53 - Resolve VolumeMounts Issue in Kubernetes.5](images_8/Day-53.5.png)
+![Task 53 - Resolve VolumeMounts Issue in Kubernetes.6](images_8/Day-53.6.png)
 
 ---
 
@@ -84,6 +92,8 @@ then create
 kubectl create -f /tmp/nginx.yaml
 ```
 
+![Task 53 - Resolve VolumeMounts Issue in Kubernetes.7](images_8/Day-53.7.png)
+
 ---
 
 ### 🔁 Step 6: Copy the file “/home/thor/index.php” to the “nginx-container”
@@ -96,6 +106,7 @@ kubectl cp /home/thor/index.php nginx-phpfpm:/var/www/html -c nginx-container
 
 ### 🔁 Step 7: Check the Website using the Website Button
 
+![Task 53 - Resolve VolumeMounts Issue in Kubernetes.8](images_8/Day-53.8.png)
 
 ---
 
