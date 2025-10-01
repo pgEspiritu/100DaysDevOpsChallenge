@@ -110,6 +110,20 @@ kubectl cp /home/thor/index.php nginx-phpfpm:/var/www/html -c nginx-container
 
 ---
 
+## 🗝️ Explanation of Key Commands – VolumeMounts Issue Fix
+| Command                                                                         | Description                                                                    |
+| ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| `kubectl get pods`                                                              | Lists all pods in the current namespace to check if `nginx-phpfpm` is running. |
+| `kubectl get configmap`                                                         | Lists available ConfigMaps to confirm `nginx-config` exists.                   |
+| `kubectl describe configmap nginx-config`                                       | Shows details of `nginx-config` including the misconfigured Nginx root path.   |
+| `kubectl get pod nginx-phpfpm -o yaml > /tmp/nginx.yaml`                        | Exports the pod manifest to YAML for inspection and editing.                   |
+| `vi /tmp/nginx.yaml`                                                            | Opens the manifest so you can update the wrong volume mount path.              |
+| `kubectl delete -f /tmp/nginx.yaml`                                             | Removes the old pod before applying the corrected YAML.                        |
+| `kubectl create -f /tmp/nginx.yaml`                                             | Recreates the pod with fixed volume mount configuration.                       |
+| `kubectl cp /home/thor/index.php nginx-phpfpm:/var/www/html -c nginx-container` | Copies `index.php` from the jump host into the correct Nginx document root.    |
+
+---
+
 ## ✅ Task Completed
 - Fixed ConfigMap for nginx-phpfpm.
 - Recreated pod to load new config.
