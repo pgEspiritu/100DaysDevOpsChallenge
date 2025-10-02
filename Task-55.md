@@ -92,8 +92,8 @@ kubectl logs -f webserver -c sidecar-container
 
 ---
 
-![Task 54 - Kubernetes Sidecar Containers.1](images_8/Day-55.1.png)
-![Task 54 - Kubernetes Sidecar Containers.2](images_8/Day-55.2.png)
+![Task 55 - Kubernetes Sidecar Containers.1](images_8/Day-55.1.png)
+![Task 55 - Kubernetes Sidecar Containers.2](images_8/Day-55.2.png)
 
 ---
 
