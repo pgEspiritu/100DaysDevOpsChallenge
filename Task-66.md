@@ -1,5 +1,5 @@
-☸️ 100 Days of DevOps – Day 66
-✅ Task: Deploy MySQL with Persistent Storage and Secrets on Kubernetes
+# ☸️ 100 Days of DevOps – Day 66
+## ✅ Task: Deploy MySQL with Persistent Storage and Secrets on Kubernetes
 
 ```text
 A new MySQL server needs to be deployed on Kubernetes cluster. The Nautilus DevOps team was working on to gather the requirements.
