@@ -216,6 +216,7 @@ kubectl apply -f /tmp/mysql-deployment.yaml
 
 ![Task 66 - Deploy MySQL with Persistent Storage and Secrets on Kubernetes.6](images_10/Day-66.6.png)
 ![Task 66 - Deploy MySQL with Persistent Storage and Secrets on Kubernetes.7](images_10/Day-66.7.png)
+![Task 66 - Deploy MySQL with Persistent Storage and Secrets on Kubernetes.8](images_10/Day-66.8.png)
 
 ---
 
@@ -259,8 +260,8 @@ kubernetes   ClusterIP   10.96.0.1       <none>        443/TCP          59m
 mysql        NodePort    10.96.200.237   <none>        3306:30007/TCP   37s
 ```
 
-![Task 66 - Deploy MySQL with Persistent Storage and Secrets on Kubernetes.8](images_10/Day-66.8.png)
 ![Task 66 - Deploy MySQL with Persistent Storage and Secrets on Kubernetes.9](images_10/Day-66.9.png)
+![Task 66 - Deploy MySQL with Persistent Storage and Secrets on Kubernetes.10](images_10/Day-66.10.png)
 
 ---
 
@@ -272,8 +273,6 @@ kubectl get pv,pvc
 kubectl get secrets
 kubectl get svc mysql
 ```
-
-![Task 66 - Deploy MySQL with Persistent Storage and Secrets on Kubernetes.10](images_10/Day-66.10.png)
 
 then Check logs to confirm database initialized:
 ```bash
