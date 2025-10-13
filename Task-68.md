@@ -33,6 +33,8 @@ ssh root@jenkins
 ```
 > Password: S3curePass
 
+![Task 68 - Set Up Jenkins Server.1](images_10/Day-68.1.png)
+
 ---
 
 ### 🔁 Step 2: Install Java (Required for Jenkins)
@@ -46,6 +48,10 @@ if not, install the latest java version:
 yum install -y java-17-openjdk
 ```
 
+![Task 68 - Set Up Jenkins Server.2](images_10/Day-68.2.png)
+![Task 68 - Set Up Jenkins Server.3](images_10/Day-68.3.png)
+
+
 ---
 
 ### 🔁 Step 3: Add Jenkins Repository
@@ -54,12 +60,16 @@ curl -o /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenki
 rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
 ```
 
+![Task 68 - Set Up Jenkins Server.4](images_10/Day-68.4.png)
+
 ---
 
 ### 🔁 Step 4: Install Jenkins Using YUM
 ```bash
 yum install jenkins -y
 ```
+
+![Task 68 - Set Up Jenkins Server.5](images_10/Day-68.5.png)
 
 ---
 
@@ -81,6 +91,8 @@ systemctl status jenkins
 ```
 > ✅ Jenkins service is running
 
+![Task 68 - Set Up Jenkins Server.6](images_10/Day-68.6.png)
+
 ---
 
 ### 🔁 Step 7: Access Jenkins Web UI
@@ -91,8 +103,16 @@ cat /var/lib/jenkins/secrets/initialAdminPassword
 ```
 > password: c393a6e79d86495c915b382195522917
 
+![Task 68 - Set Up Jenkins Server.7](images_10/Day-68.7.png)
+
 then access the Jenkins Web UI using the root password.
-> Note: Install suggested plugins (just continue even there's failed installation)
+
+![Task 68 - Set Up Jenkins Server.8](images_10/Day-68.8.png)
+
+Install suggested plugins (just continue even there's failed installation)
+
+![Task 68 - Set Up Jenkins Server.9](images_10/Day-68.9.png)
+![Task 68 - Set Up Jenkins Server.10](images_10/Day-68.10.png)
 
 ---
 
@@ -112,8 +132,11 @@ Make sure to install all the plugins. install the necessary plugin, or
 update the jenkins (curl -O https://updates.jenkins.io/download/plugins/mailer/522.va_995fa_cfb_8b_d/mailer.hpi), 
 in my case i installed manually the email extension in the Jenkins UI
 
+![Task 68 - Set Up Jenkins Server.11](images_10/Day-68.11.png)
+
 after installing the email extension plugin, input the email in the account details.
 
+![Task 68 - Set Up Jenkins Server.12](images_10/Day-68.12.png)
 
 Click Save and Continue → Save and Finish
 > ✅ Jenkins setup completed successfully.
