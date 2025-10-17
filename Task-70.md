@@ -43,6 +43,8 @@ Password: Adm!n321
 ```
 > ✅ You should now see the Jenkins dashboard.
 
+![Task 70 - Configure Jenkins User Access.1](images_10/Day-70.1.png)
+
 ---
 
 ### 🔁 Step 2: Install and Enable Matrix Authorization Plugin
@@ -59,6 +61,8 @@ Manage Jenkins → Plugins → Available plugins
 3. Once installed, click:
 > ✅ Restart Jenkins when installation is complete and no jobs are running.
 Wait until Jenkins reloads and the login page reappears.
+
+![Task 70 - Configure Jenkins User Access.2](images_10/Day-70.2.png)
 
 ---
 
@@ -81,6 +85,8 @@ Then assign permissions:
 
 Click Save.
 
+![Task 70 - Configure Jenkins User Access.3](images_10/Day-70.3.png)
+
 --- 
 
 ### 🔁 Step 4: Create User “john”
@@ -100,6 +106,8 @@ Email address: (optional)
 ```
 
 3. Click Create User.
+
+![Task 70 - Configure Jenkins User Access.4](images_10/Day-70.4.png)
 
 ---
 
@@ -121,6 +129,8 @@ Job → Read
 
 Click Save.
 
+![Task 70 - Configure Jenkins User Access.5](images_10/Day-70.5.png)
+
 ---
 
 ### 🔁 Step 6: Verify User Access
@@ -133,11 +143,14 @@ Click Save.
 Username: john
 Password: BruCStnMT5
 ```
+![Task 70 - Configure Jenkins User Access.6](images_10/Day-70.6.png)
 
-Confirm:
+Confirmed:
 - John can view jobs.
 - John cannot build, configure, or delete any jobs.
 - Anonymous users see no access to Jenkins dashboard.
+
+![Task 70 - Configure Jenkins User Access.7](images_10/Day-70.7.png)
 
 ---
 
