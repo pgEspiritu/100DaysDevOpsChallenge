@@ -47,6 +47,8 @@ Username: admin
 Password: Adm!n321
 ````
 
+![Task 71 - Configure Jenkins Job for Package Installation.1](images_11/Day-71.1.png)
+
 ---
 
 ### 🔁 Step 2: Create a New Job
@@ -58,6 +60,8 @@ install-packages
 ```
 3. Choose Freestyle project → click OK.
 
+![Task 71 - Configure Jenkins Job for Package Installation.2](images_11/Day-71.2.png)
+
 ---
 
 ### 🔁 Step 3: Add String Parameter
@@ -65,12 +69,16 @@ install-packages
 In the General tab:
 1. Check “This project is parameterized.”
 2. Click Add Parameter → String Parameter.
-3. Fill in the details:
+3. Fill in the details
+```nginx
 | Field         | Value                                                      |
 | ------------- | ---------------------------------------------------------- |
 | Name          | `PACKAGE`                                                  |
 | Default Value | `vim`                                                      |
 | Description   | `Enter the package name to install on the storage server.` |
+```
+
+![Task 71 - Configure Jenkins Job for Package Installation.3](images_11/Day-71.3.png)
 
 ---
 
@@ -99,6 +107,8 @@ fi
 
 then save
 
+![Task 71 - Configure Jenkins Job for Package Installation.4](images_11/Day-71.4.png)
+
 ---
 
 ### 🔁 Step 5: Install Required Plugins (if needed)
@@ -113,6 +123,8 @@ SSH Agent Plugin
 3. Select Restart Jenkins when installation is complete and no jobs are running.
 4. After restart, refresh the Jenkins UI.
 
+![Task 71 - Configure Jenkins Job for Package Installation.5](images_11/Day-71.5.png)
+
 ---
 
 ### 🔁 Step 5: Build
@@ -124,6 +136,8 @@ tree
 ```
 3. Click Build.
 > ✅ The build console should show logs confirming the package installation on the remote server.
+
+![Task 71 - Configure Jenkins Job for Package Installation.6](images_11/Day-71.6.png)
 
 ---
 
