@@ -51,6 +51,8 @@ to record and share your work.
    - Username: `admin`
    - Password: `Adm!n321`
 
+![Task 74 - Jenkins Database Backup Job.1](images_11/Day-74.1.png)
+
 ---
 
 ### 🔁 Step 2: Create the Jenkins Job
@@ -61,6 +63,8 @@ to record and share your work.
    database-backup
    ```
 3. Select Freestyle Project → click OK.
+
+![Task 74 - Jenkins Database Backup Job.2](images_11/Day-74.2.png)
 
 ---
 
@@ -73,6 +77,8 @@ Add the schedule:
 */10 * * * *
 ```
 > ⏱️ This runs the job every 10 minutes.
+
+![Task 74 - Jenkins Database Backup Job.3](images_11/Day-74.3.png)
 
 ---
 
@@ -114,6 +120,8 @@ fi
 
 Click Apply → Save.
 
+![Task 74 - Jenkins Database Backup Job.4](images_11/Day-74.4.png)
+
 ---
 
 ### 🔁 Step 5: Setup SSH Passwordless Access
@@ -129,11 +137,15 @@ Generate SSH Key Pair on Jenkins Server
 ssh-keygen -t rsa -b 4096 -N "" -f ~/.ssh/id_rsa
 ```
 
+![Task 74 - Jenkins Database Backup Job.5](images_11/Day-74.5.png)
+
 Copy Public Key to Database Server
 ```bash
 ssh-copy-id peter@stdb01.stratos.xfusioncorp.com
 ```
 > pw: Sp!dy
+
+![Task 74 - Jenkins Database Backup Job.6](images_11/Day-74.6.png)
 
 Copy Public Key to Backup Server
 ```bash
@@ -141,6 +153,7 @@ ssh-copy-id clint@stbkp01.stratos.xfusioncorp.com
 ```
 > pw: H@wk3y3
 
+![Task 74 - Jenkins Database Backup Job.7](images_11/Day-74.7.png)
 
 Test Connectivity
 ```bash
@@ -149,6 +162,8 @@ ssh clint@stbkp01.stratos.xfusioncorp.com "hostname"
 ```
 
 > successfully connected without asking for passwords.
+
+![Task 74 - Jenkins Database Backup Job.8](images_11/Day-74.8.png)
 
 ---
 
@@ -167,6 +182,8 @@ When done, click:
 
 Then refresh the UI page.
 
+![Task 74 - Jenkins Database Backup Job.9](images_11/Day-74.9.png)
+
 ---
 
 ### 🔁 Step 6: Run and Validate Job
@@ -183,6 +200,8 @@ Starting database backup job...
 ✅ Database backup copied successfully to stbkp01.stratos.xfusioncorp.com:/home/clint/db_backups/
 Finished: SUCCESS
 ```
+
+![Task 74 - Jenkins Database Backup Job.10](images_11/Day-74.10.png)
 
 ---
 
@@ -201,11 +220,11 @@ total 44
 
 > ✅ Database backup file successfully created and transferred.
 
+![Task 74 - Jenkins Database Backup Job.11](images_11/Day-74.11.png)
 
 ---
 
-
-🗝️ Key Commands – Database Backup Automation
+## 🗝️ Key Commands – Database Backup Automation
 
 | Command                   | Description                                     |
 | ------------------------- | ----------------------------------------------- |
@@ -218,7 +237,7 @@ total 44
 
 ---
 
-🎯 Task Completed
+## 🎯 Task Completed
 
 - Jenkins job database-backup created ✅
 - Configured periodic schedule (*/10 * * * *) ✅
