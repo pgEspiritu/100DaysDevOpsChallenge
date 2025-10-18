@@ -45,6 +45,8 @@ for review in case your task is marked incomplete. You may also consider using a
   - Username: admin
   - Password: Adm!n321
 
+![Task 72 - Jenkins Parameterized Builds.1](images_11/Day-72.1.png)
+
 ---
 
 ### 🔁 Step 2: Create a New Jenkins Job
@@ -54,6 +56,8 @@ for review in case your task is marked incomplete. You may also consider using a
    parameterized-job
    ```
 3. Choose Freestyle project → click OK.
+
+![Task 72 - Jenkins Parameterized Builds.2](images_11/Day-72.2.png)
 
 ---
 
@@ -71,6 +75,8 @@ In the General section:
 | Description   | `Specify the stage name.` |
 ```
 
+![Task 72 - Jenkins Parameterized Builds.3](images_11/Day-72.3.png)
+
 ---
 
 ### 🔁 Step 4: Add Choice Parameter
@@ -85,6 +91,8 @@ In the General section:
 | Choices     | `Development`<br>`Staging`<br>`Production` |
 | Description | `Select the target environment.`           |
 ```
+
+![Task 72 - Jenkins Parameterized Builds.4](images_11/Day-72.4.png)
 
 ---
 
@@ -103,6 +111,8 @@ echo "Build completed successfully!"
 
 Apply and save
 
+![Task 72 - Jenkins Parameterized Builds.5](images_11/Day-72.5.png)
+
 ---
 
 ### 🔁 Step 6: (Optional) Install or Update Plugins
@@ -117,6 +127,8 @@ If parameter options don’t appear correctly or Jenkins is missing UI features:
 4. Refresh Jenkins UI after restart.
 > Note: IF pipeline installation is failed, install also other pipeline plugins.
 
+![Task 72 - Jenkins Parameterized Builds.6](images_11/Day-72.6.png)
+
 ---
 
 ### 🔁 Step 7: Build
@@ -126,6 +138,8 @@ If parameter options don’t appear correctly or Jenkins is missing UI features:
   - Stage: Keep as Build
   - env: Select Production
 3. Click Build.
+
+![Task 72 - Jenkins Parameterized Builds.7](images_11/Day-72.7.png)
 
 ---
 
@@ -147,6 +161,8 @@ Finished: SUCCESS
 ```
 > ✅ The job ran successfully using both parameters.
 
+![Task 72 - Jenkins Parameterized Builds.8](images_11/Day-72.8.png)
+
 ---
 
 🔁 Step 9: Verify Repeated Builds
@@ -155,6 +171,9 @@ Re-run the job with different parameter combinations:
 - Stage = Test, env = Development
 - Stage = Deploy, env = Staging
 All should print successfully.
+
+![Task 72 - Jenkins Parameterized Builds.9](images_11/Day-72.9.png)
+![Task 72 - Jenkins Parameterized Builds.10](images_11/Day-72.10.png)
 
 ---
 
