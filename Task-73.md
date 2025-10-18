@@ -47,6 +47,8 @@ to record and share your work.
   - Username: admin
   - Password: Adm!n321
 
+![Task 73 - Jenkins Scheduled Jobs.1](images_11/Day-73.1.png)
+
 ---
 
 ### 🔁 Step 2: Create a New Jenkins Job
@@ -57,6 +59,8 @@ to record and share your work.
    copy-logs
    ```
 3. Select Freestyle project → click OK.
+
+![Task 73 - Jenkins Scheduled Jobs.2](images_11/Day-73.2.png)
 
 ---
 
@@ -69,6 +73,8 @@ H/12 * * * *
 ```
 > ⏱️ Jenkins uses the Unix-style cron syntax.
 Example: H/12 * * * * runs approximately every 12 minutes (using Jenkins hash for balanced load).
+
+![Task 73 - Jenkins Scheduled Jobs.3](images_11/Day-73.3.png)
 
 ---
 
@@ -102,6 +108,8 @@ fi
 
 Apply and save
 
+![Task 73 - Jenkins Scheduled Jobs.4](images_11/Day-73.4.png)
+
 ---
 
 ### 🔁 Step 5: (Optional) Install Plugins
@@ -120,6 +128,8 @@ When done, click:
 Then refresh the UI.
 
 > Note: If installation has failed, just install other plugins needed
+
+![Task 73 - Jenkins Scheduled Jobs.5](images_11/Day-73.5.png)
 
 ---
 
@@ -143,6 +153,8 @@ The key fingerprint is:
 SHA256:H0Iz2+xT89E5g+AjhwOcXRcvMnBjVsPpQsnNbjQjt9U jenkins@jenkins.stratos.xfusioncorp.com
 ```
 
+![Task 73 - Jenkins Scheduled Jobs.6](images_11/Day-73.6.png)
+
 2️⃣ Copy the Public Key to App Server 3 (Source)
 ```bash
 ssh-copy-id banner@stapp03.stratos.xfusioncorp.com
@@ -163,6 +175,8 @@ Bl@kW
 ```
 ✅ This allows Jenkins to push logs to Storage Server without password next time.
 
+![Task 73 - Jenkins Scheduled Jobs.7](images_11/Day-73.7.png)
+
 4️⃣ Test Passwordless SSH Connectivity
 Run these tests:
 ```bash
@@ -177,9 +191,11 @@ ststor01.stratos.xfusioncorp.com
 ```
 > (no password prompts)
 
+![Task 73 - Jenkins Scheduled Jobs.8](images_11/Day-73.8.png)
+
 ---
 
-🔁 Step 7: Run Job Manually (First Run)
+### 🔁 Step 7: Run Job Manually (First Run)
 
 Click Build Now to trigger the job manually and verify output.
 
@@ -194,6 +210,11 @@ Starting log copy job...
 ✅ Apache logs copied successfully from App Server 3 to Storage Server.
 Finished: SUCCESS
 ```
+
+![Task 73 - Jenkins Scheduled Jobs.9](images_11/Day-73.9.png)
+
+---
+
 
 🔁 Step 8: Verify Files on Storage Server
 
@@ -211,8 +232,9 @@ total 4
 ```
 > ✅ Logs are being copied successfully every 12 minutes.
 
----
+![Task 73 - Jenkins Scheduled Jobs.10](images_11/Day-73.10.png)
 
+---
 
 ## 🗝️ Key Commands – Log Copy Automation
 
@@ -226,7 +248,7 @@ total 4
 
 ---
 
-🎯 Task Completed:
+## 🎯 Task Completed:
 
 - Jenkins job copy-logs created and configured ✅
 - Periodic build trigger set to 12 minutes ✅
