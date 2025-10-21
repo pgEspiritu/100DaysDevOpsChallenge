@@ -55,6 +55,8 @@ record and share your work.
   - Username: admin
   - Password: Adm!n321
 
+![Task 76 - Jenkins Project Security.1](images_11/Day-76.1.png)
+
 ---
 
 ### 🔁 Step 2: Ensure Required Plugins were installed
@@ -67,6 +69,8 @@ Manage Jenkins → Plugins
 - Matrix Authorization Strategy Plugin
 - Role-based Authorization Strategy Plugin
 > You may need to install other plugins
+
+![Task 76 - Jenkins Project Security.2](images_11/Day-76.2.png)
 
 3. Restart Jenkins when installation is complete
 
@@ -84,6 +88,8 @@ Manage Jenkins → Plugins
     For admin: Overall = Administer
     For sam: Overall: Read
     For rohan: Overall: Read
+
+![Task 76 - Jenkins Project Security.3](images_11/Day-76.3.png)
    
 3. Click Save.
 
@@ -91,6 +97,8 @@ Manage Jenkins → Plugins
 
 ### 🔁 Step 3: Open the Existing Job
 From the Jenkins Dashboard, click the job `Packages`.
+
+![Task 76 - Jenkins Project Security.4](images_11/Day-76.4.png)
 
 ---
 
@@ -143,6 +151,8 @@ For user rohan
 1. Scroll down and click Save or Apply.
 2. You’ll return to the Packages job overview page.
 
+![Task 76 - Jenkins Project Security.5](images_11/Day-76.5.png)
+
 ---
 
 ### 🔁 Step 8: Verify Permissions
@@ -159,6 +169,8 @@ Option 1 – Simulate Login (UI Test)
 - ✅ Can configure and build.
 - ✅ Cannot delete or manage other jobs.
 
+![Task 76 - Jenkins Project Security.6](images_11/Day-76.6.png)
+
 3. Log in as rohan:
    ```makefile
    Username: rohan
@@ -169,6 +181,7 @@ Option 1 – Simulate Login (UI Test)
 - ✅ Can view “Packages” job.
 - ✅ Can build, configure, cancel, read, update, and tag the "Packages" job.
 
+![Task 76 - Jenkins Project Security.7](images_11/Day-76.7.png)
 
 ---
 
