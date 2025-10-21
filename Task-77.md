@@ -278,8 +278,8 @@ then re-run.
 
 ## 🎯 Task Completed
 
-✅ Jenkins slave node Storage Server added and labeled ststor01
-✅ Pipeline job xfusion-webapp-job created
-✅ Single stage Deploy configured
-✅ Static website deployed to /var/www/html
-✅ Verified site loads correctly on Load Balancer URL
+- ✅ Jenkins slave node Storage Server added and labeled ststor01
+- ✅ Pipeline job xfusion-webapp-job created
+- ✅ Single stage Deploy configured
+- ✅ Static website deployed to /var/www/html
+- ✅ Verified site loads correctly on Load Balancer URL
