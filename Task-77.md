@@ -59,6 +59,8 @@ Jenkins
   Password: Adm!n321
   ```
 
+![Task 77 - Jenkins Deploy Pipeline.1](images_11/Day-77.1.png)
+
 Gitea
 - URL: Click the Gitea button on top bar
 - Login:
@@ -66,6 +68,9 @@ Gitea
   Username: sarah
   Password: Sarah_pass123
   ```
+  
+![Task 77 - Jenkins Deploy Pipeline.2](images_11/Day-77.2.png)
+
 - Verify repository exists:
   `web_app` (this repo contains the static website code)
 
@@ -89,6 +94,8 @@ Manage Jenkins → Plug-ins
 
 3. Restart Jenkins after installation
 
+![Task 77 - Jenkins Deploy Pipeline.3](images_11/Day-77.3.png)
+
 ---
 
 ### 🔁 Step 3: Update java version in Storage Server
@@ -109,6 +116,10 @@ sudo su
 yum install java-17-openjdk -y
 ```
 
+![Task 77 - Jenkins Deploy Pipeline.4](images_11/Day-77.4.png)
+
+---
+
 ### 🔁 Step 3: Create SSH Credentials for Storage Server
 
 1. In Jenkins, go to:
@@ -128,6 +139,8 @@ Description: SSH credentials for Storage Server (ststor01)
 
 3. Click Create ✅
 
+![Task 77 - Jenkins Deploy Pipeline.5](images_11/Day-77.5.png)
+
 ---
 
 ### 🔁 Step 4: Configure Jenkins Slave (Storage Server)
@@ -138,8 +151,10 @@ Description: SSH credentials for Storage Server (ststor01)
    Storage Server
    ```
 3. Select: Permanent Agent → Click OK
+
+![Task 77 - Jenkins Deploy Pipeline.6](images_11/Day-77.6.png)
    
-4. Configure the following:
+5. Configure the following:
    - Remote root directory: /var/www/html
    - Labels: ststor01
    - Launch method: “Launch agent via SSH”
@@ -147,17 +162,26 @@ Description: SSH credentials for Storage Server (ststor01)
    - Credentials: Natasha
    - Host Key Verification Strategy: Manually trusted key Verification Strategy
     
-5. Click Save and Launch agent.
+6. Click Save and Launch agent.
+
+![Task 77 - Jenkins Deploy Pipeline.7](images_11/Day-77.7.png)
 
 > Issue found: Give Jenkins User Permission to /var/www/html
+
+![Task 77 - Jenkins Deploy Pipeline.8](images_11/Day-77.8.png)
 
    Steps to Fix:
    1. On Storage Server:
    ```bash
    chown -R natasha:natasha /var/www/html
    ```
+
+![Task 77 - Jenkins Deploy Pipeline.9](images_11/Day-77.9.png)
+
    2. Relaunch the Node
    > Now, the node is online ✅
+
+![Task 77 - Jenkins Deploy Pipeline.10](images_11/Day-77.10.png)
 
 ---
 
@@ -169,6 +193,8 @@ xfusion-webapp-job
 ```
 3. Select Pipeline (❌ Not Multibranch)
 4. Click OK
+
+![Task 77 - Jenkins Deploy Pipeline.11](images_11/Day-77.11.png)
 
 ---
 
@@ -207,6 +233,8 @@ pipeline {
 
 Click Save.
 
+![Task 77 - Jenkins Deploy Pipeline.12](images_11/Day-77.12.png)
+
 ---
 
 ### 🔁 Step 7: Run and Verify
@@ -220,13 +248,19 @@ sudo chown -R natasha:natasha /var/www
 sudo chmod -R 755 /var/www
 ```
 
+![Task 77 - Jenkins Deploy Pipeline.13](images_11/Day-77.13.png)
+
 then re-run. 
 
 3. Open Console Output
 > The deployment is successful. ✅
 
+![Task 77 - Jenkins Deploy Pipeline.14](images_11/Day-77.14.png)
+
 4. Click the App button on the top bar.
 > Web-App can now be accessed. ✅
+
+![Task 77 - Jenkins Deploy Pipeline.15](images_11/Day-77.15.png)
 
 ---
 
