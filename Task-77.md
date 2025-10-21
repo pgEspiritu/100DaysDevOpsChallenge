@@ -118,7 +118,7 @@ Manage Jenkins → Credentials → System → Global credentials (unrestricted)
 
 2. Click Add Credentials and enter:
 ```nginx
-Kind: SSH Username with password
+Kind: Username with password
 Scope: Global
 Username: natasha
 Password: Bl@kW
@@ -127,8 +127,6 @@ Description: SSH credentials for Storage Server (ststor01)
 ```
 
 3. Click Create ✅
-
-Note: If SSH Username with password can't be found, install the necessary plugins via Manage Jenkins
 
 ---
 
@@ -150,7 +148,104 @@ Note: If SSH Username with password can't be found, install the necessary plugin
    - Host Key Verification Strategy: Manually trusted key Verification Strategy
     
 5. Click Save and Launch agent.
-✅ Node should appear online with label ststor01. If not, update the java version of Storage Server
+
+> Issue found: Give Jenkins User Permission to /var/www/html
 
    Steps to Fix:
-   
+   1. On Storage Server:
+   ```bash
+   chown -R natasha:natasha /var/www/html
+   ```
+   2. Relaunch the Node
+   > Now, the node is online ✅
+
+---
+
+### 🔁 Step 5: Create Jenkins Pipeline Job
+1. From Jenkins Dashboard → Click New Item
+2. Enter name:
+```bash
+xfusion-webapp-job
+```
+3. Select Pipeline (❌ Not Multibranch)
+4. Click OK
+
+---
+
+### 🔁 Step 6: Configure Pipeline Script
+
+Under Pipeline → Definition → Pipeline script, paste the following:
+```groovy
+pipeline {
+    agent { label 'ststor01' }
+
+    stages {
+        stage('Deploy') {
+            steps {
+                echo 'Updating existing website in /var/www/html...'
+                dir('/var/www/html') {
+                    sh '''
+                        if [ -d .git ]; then
+                            git reset --hard
+                            git pull origin main || git pull origin master
+                        else
+                            rm -rf ./*
+                            git clone http://git.stratos.xfusioncorp.com/sarah/web_app.git .
+                        fi
+                    '''
+                }
+                echo 'Deployment successful.'
+            }
+        }
+    }
+}
+```
+
+✅ Notes:
+- The stage name must be Deploy (case-sensitive).
+- Replace the Gitea URL if it differs in your environment.
+
+Click Save.
+
+---
+
+### 🔁 Step 7: Run and Verify
+1. Click Build Now
+
+issue found: Can't create a temporary directory under the workspace path for internal use (like /var/www/html@tmp).
+
+fix: 
+```bash
+sudo chown -R natasha:natasha /var/www
+sudo chmod -R 755 /var/www
+```
+
+then re-run. 
+
+3. Open Console Output
+> The deployment is successful. ✅
+
+4. Click the App button on the top bar.
+> Web-App can now be accessed. ✅
+
+---
+
+## 🗝️ Key Commands and Configs
+
+| Command                          | Description                     |
+| -------------------------------- | ------------------------------- |
+| `yum install java-17-openjdk -y` | Install Java on agent node      |
+| `git clone <repo>`               | Clone the static web repo       |
+| `/var/www/html`                  | Document root of App Servers    |
+| `agent { label 'ststor01' }`     | Runs pipeline on Storage Server |
+| `stage('Deploy')`                | Defines deployment stage        |
+
+---
+
+## 🎯 Task Completed
+
+✅ Jenkins slave node Storage Server added and labeled ststor01
+✅ Pipeline job xfusion-webapp-job created
+✅ Single stage Deploy configured
+✅ Static website deployed to /var/www/html
+✅ Verified site loads correctly on Load Balancer URL
