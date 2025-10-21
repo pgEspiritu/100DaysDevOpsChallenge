@@ -57,6 +57,8 @@ screen recording software such as loom.com to record and share your work.
   - Username: admin
   - Password: Adm!n321
 
+![Task 75 - Jenkins Slave Nodes.1](images_11/Day-75.1.png)
+
 ---
 
 ### 🔁 Step 2: Install SSH Build Agent Plugin (if required)
@@ -70,6 +72,8 @@ If Jenkins cannot connect via SSH, install this plugin:
 4. Install and restart Jenkins
 
 Then reconnect the agents.
+
+![Task 75 - Jenkins Slave Nodes.2](images_11/Day-75.2.png)
 
 ---
 
@@ -87,6 +91,7 @@ then set each app server ssh keys
 ssh-keygen -t rsa -b 4096 -N "" -f ~/.ssh/id_rsa
 ```
 
+![Task 75 - Jenkins Slave Nodes.3](images_11/Day-75.3.png)
 
 Copy Public Key to App Server 1
 ```bash
@@ -94,17 +99,23 @@ ssh-copy-id tony@stapp01.stratos.xfusioncorp.com
 ```
 > pw: Ir0nM@n
 
+![Task 75 - Jenkins Slave Nodes.4](images_11/Day-75.4.png)
+
 Copy Public Key to App Server 2
 ```bash
 ssh-copy-id steve@stapp02.stratos.xfusioncorp.com
 ```
 > pw: Am3ric@
 
+![Task 75 - Jenkins Slave Nodes.5](images_11/Day-75.5.png)
+
 Copy Public Key to App Server 3
 ```bash
 ssh-copy-id banner@stapp03.stratos.xfusioncorp.com
 ```
 > pw: BigGr33n
+
+![Task 75 - Jenkins Slave Nodes.6](images_11/Day-75.6.png)
 
 then 💡 Test each connection:
 ```bash
@@ -113,6 +124,8 @@ ssh steve@stapp02.stratos.xfusioncorp.com "hostname"
 ssh banner@stapp03.stratos.xfusioncorp.com "hostname"
 ```
 > successfully connected without asking for passwords.
+
+![Task 75 - Jenkins Slave Nodes.7](images_11/Day-75.7.png)
 
 ---
 
@@ -142,6 +155,11 @@ Then fill in the following details for each App Server:
 ```
 
 Click Create after entering each credential.
+
+![Task 75 - Jenkins Slave Nodes.8](images_11/Day-75.8.png)
+![Task 75 - Jenkins Slave Nodes.9](images_11/Day-75.9.png)
+![Task 75 - Jenkins Slave Nodes.10](images_11/Day-75.10.png)
+![Task 75 - Jenkins Slave Nodes.11](images_11/Day-75.11.png)
 
 ---
 
@@ -174,6 +192,10 @@ App_server_1
 | Host                  | `stapp01.stratos.xfusioncorp.com`                      |
 | Credentials           | Add → Jenkins → SSH Username with private key → `tony` |
 ```
+
+![Task 75 - Jenkins Slave Nodes.12](images_11/Day-75.12.png)
+![Task 75 - Jenkins Slave Nodes.13](images_11/Day-75.13.png)
+
 
 Issue Found:
 The Node is offline
@@ -212,6 +234,8 @@ App_server_2
 | Credentials           | Add → Jenkins → SSH Username with private key → `steve` |
 ```
 
+![Task 75 - Jenkins Slave Nodes.14](images_11/Day-75.14.png)
+
 ---
 
 ### 🔁 Step 6: Create App_server_3
@@ -236,6 +260,8 @@ App_server_3
 | Credentials           | Add → Jenkins → SSH Username with private key → `banner` |
 ```
 
+![Task 75 - Jenkins Slave Nodes.15](images_11/Day-75.15.png)
+
 ---
 
 ### 🔁 Step 7: Verify All Nodes Online
@@ -245,6 +271,8 @@ Once all nodes are configured and connected, confirm under:
 Manage Jenkins → Nodes and Clouds → Nodes List
 
 You should see all three nodes Online and ready for builds 🚀
+
+![Task 75 - Jenkins Slave Nodes.16](images_11/Day-75.16.png)
 
 ---
 
