@@ -44,13 +44,13 @@ share your work.
 📝 Task Summary
 
 - Login to Jenkins and Gitea
-- Install necessary plugins
-- Add SSH credentials for natasha (Storage Server)
-- Add Jenkins slave node labeled ststor01
-- Create pipeline job datacenter-webapp-job
-- Add parameter BRANCH
-- Conditionally deploy master or feature branch
-- Verify deployment on Load Balancer URL
+- Install required Jenkins plugins
+- Create SSH credentials for the Storage Server
+- Add Jenkins slave node (Storage Server) labeled ststor01
+- Create pipeline job datacenter-webapp-job (non-multibranch)
+- Add parameter BRANCH (master or feature)
+- Deploy code from the corresponding branch conditionally
+- Verify deployment on the Load Balancer URL
 
 ---
 
@@ -316,9 +316,13 @@ Click the App button on the top bar.
 
 🎯 Task Completed
 
-- ✅ Jenkins slave node Storage Server labeled ststor01
-- ✅ Pipeline job datacenter-webapp-job created
-- ✅ String parameter BRANCH added
-- ✅ Conditional deployment working for master and feature branches
-- ✅ Website verified on Load Balancer URL
+| ✅  | Item                                                                 |
+| -- | -------------------------------------------------------------------- |
+| ✔️ | Jenkins slave node **Storage Server** created and labeled `ststor01` |
+| ✔️ | SSH credentials configured (`natasha`)                               |
+| ✔️ | Pipeline job **datacenter-webapp-job** created                       |
+| ✔️ | String parameter **BRANCH** added                                    |
+| ✔️ | Conditional deployment logic working (`master` / `feature`)          |
+| ✔️ | Website accessible via Load Balancer URL                             |
+| ✔️ | Verified successful console output                                   |
 
