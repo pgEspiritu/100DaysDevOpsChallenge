@@ -215,13 +215,13 @@ pipeline {
             steps {
                 echo "Deploying branch '${params.BRANCH}' from web_app repository..."
 
+                // Go to web root
                 dir('/var/www/html') {
                     sh '''
-                        echo "Cleaning old files..."
-                        # Remove everything except Jenkins workspace directories
-                        find . -mindepth 1 ! -path "./workspace*" -exec rm -rf {} +
+                        echo "Cleaning existing website files..."
+                        rm -rf * .[^.]* || true
 
-                        echo "Cloning branch: ${BRANCH}"
+                        echo "Cloning ${BRANCH} branch..."
                         git clone -b ${BRANCH} http://git.stratos.xfusioncorp.com/sarah/web_app.git .
                     '''
                 }
@@ -231,7 +231,6 @@ pipeline {
         }
     }
 }
-
 ```
 
 ✅ Notes:
