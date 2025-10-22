@@ -168,6 +168,7 @@ If not created, follow these:
    Steps to Fix:
    1. On Storage Server:
    ```bash
+   sudo chown -R natasha html/
    sudo chown -R natasha:natasha /var/www
    sudo chmod -R 755 /var/www
    ```
