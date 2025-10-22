@@ -167,6 +167,28 @@ If not created, follow these:
 
    Steps to Fix:
    1. On Storage Server:
+   navigate to:
+   ```bash
+   cd /var/www
+   ```
+   verify content:
+   ```bash
+   ls
+   ```
+   > html
+
+   check current permission
+   ```bash
+   ls -l
+   ```
+   > total of 4
+
+  edit permission:
+  ```bash
+  sudo chown -R natasha html/
+  ```
+
+   
    ```bash
    sudo chown -R natasha html/
    sudo chown -R natasha:natasha /var/www
