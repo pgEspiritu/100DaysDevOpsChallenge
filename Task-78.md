@@ -254,7 +254,7 @@ pipeline {
                             url: 'http://git.stratos.xfusioncorp.com/sarah/web_app.git'
                     }
                     
-                    sh "cp -r /var/www/html/workspace/xfusion-webapp-job/* /var/www/html/"
+                    sh "cp -r /var/www/html/workspace/datacenter-webapp-job/* /var/www/html/"
             }
                 }
             }
