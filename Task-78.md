@@ -205,26 +205,39 @@ If not created, follow these:
 Under Pipeline → Definition → Pipeline script, paste the following:
 ```groovy
 pipeline {
-    agent { label 'ststor01' }
-
+    agent {
+        label 'ststor01'
+    }
+    
     parameters {
         string(name: 'BRANCH', defaultValue: 'master', description: 'Branch to deploy (master or feature)')
     }
-
+    
     stages {
         stage('Deploy') {
+            when {
+                expression {
+                    params.BRANCH == 'master' || params.BRANCH == 'feature'
+                }
+            }
             steps {
-                echo "Deploying branch ${params.BRANCH}"
+                script {
+                    def repositoryPath = '/var/www/html/'
 
-                sh '''
-                    cd /var/www/html
-                    rm -rf * .[^.]* || true
-                    git clone -b ${BRANCH} http://git.stratos.xfusioncorp.com/sarah/web_app.git .
-                '''
+                    if (params.BRANCH == 'master') {
+                        git branch: 'master',
+                            url: 'http://git.stratos.xfusioncorp.com/sarah/web_app.git'
+                    } else if (params.BRANCH == 'feature') {
+                        git branch: 'feature',
+                            url: 'http://git.stratos.xfusioncorp.com/sarah/web_app.git'
+                    }
+                    
+                    sh "cp -r /var/www/html/workspace/xfusion-webapp-job/* /var/www/html/"
+            }
+                }
             }
         }
     }
-}
 
 ```
 
