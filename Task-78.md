@@ -213,24 +213,18 @@ pipeline {
     stages {
         stage('Deploy') {
             steps {
-                echo "Deploying branch '${params.BRANCH}' from web_app repository..."
+                echo "Deploying branch ${params.BRANCH}"
 
-                // Go to web root
-                dir('/var/www/html') {
-                    sh '''
-                        echo "Cleaning existing website files..."
-                        rm -rf * .[^.]* || true
-
-                        echo "Cloning ${BRANCH} branch..."
-                        git clone -b ${BRANCH} http://git.stratos.xfusioncorp.com/sarah/web_app.git .
-                    '''
-                }
-
-                echo "Deployment successful."
+                sh '''
+                    cd /var/www/html
+                    rm -rf * .[^.]* || true
+                    git clone -b ${BRANCH} http://git.stratos.xfusioncorp.com/sarah/web_app.git .
+                '''
             }
         }
     }
 }
+
 ```
 
 ✅ Notes:
