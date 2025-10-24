@@ -46,14 +46,15 @@ in case your task is marked incomplete. You may also consider using a screen rec
 
 📝 Task Summary
 
-| # | Task                    | Description                                                            |
-| - | ----------------------- | ---------------------------------------------------------------------- |
-| 1 | Configure Apache        | Install and run HTTPD on port 8080 on all app servers                  |
-| 2 | Create Jenkins Job      | Job name: `nautilus-app-deployment`                                    |
-| 3 | Automate Deployment     | Auto-trigger job on Git push (master branch)                           |
-| 4 | Set Directory Ownership | `/var/www/html` should belong to `sarah`                               |
-| 5 | Test Auto-Trigger       | Push an update to `index.html` → verify auto-deployment                |
-| 6 | Verify Output           | Access via Load Balancer URL → `Welcome to the xFusionCorp Industries` |
+| # | Task                    | Description                                            |
+| - | ----------------------- | ------------------------------------------------------ |
+| 1 | Configure Apache        | Install and run HTTPD on port 8080 on all App Servers  |
+| 2 | Create Jenkins Job      | Job name: `nautilus-app-deployment`                    |
+| 3 | Automate Deployment     | Auto-trigger job on Git push (master branch)           |
+| 4 | Set Directory Ownership | `/var/www/html` should belong to user `sarah`          |
+| 5 | Test Auto-Trigger       | Push update to `index.html` → auto-deploy verified     |
+| 6 | Verify Output           | Access via Load Balancer URL → Updated Welcome message |
+
 
 ---
 
@@ -97,7 +98,7 @@ For Server 3: Banner
 
 ---
 
-### 🔁 Step 3: Install Necessary Plugins
+### 🔁 Step 3: Install Necessary Jenkins Plugins
 
 1. In Jenkins, go to:
 ```go
@@ -119,61 +120,7 @@ Manage Jenkins → Plug-ins
 
 ---
 
-### 🔁 Step 4: Give Permission to sarah using Storage Server NATASHA
-
-Since sarah don't have sudoer to fix ownership, we can fix it by login in to the Storage Server
-
-1. login to natasha using CLI
-```bash
-ssh natasha@ststor01
-```
-> pw: Bl@kW
-
-2. Login as super user
-```bash
-sudo su
-```
-
-3. Give permission:
-```bash
-chown -R sarah:sarah /var/www/html
-chmod -R 755 /var/www/html
-```
-
-4. Verify:
-```bash
-ls -ld /var/www/html
-```
-
-output:
-```nginx
-drwxr-xr-x 3 sarah sarah 4096 Aug 18 09:57 /var/www/html
-```
-> Not sarah has permission in /var/www/html
-
----
-
-### 🔁 Step 5: Configure Jenkins Credentials
-
-Navigate to:
-```bash
-Manage Jenkins → Credentials → System → Global Credentials (unrestricted)
-```
-
-Click Add Credentials:
-```bash
-Kind: Username with password
-Username: sarah
-Password: Sarah_pass123
-ID: sarah-ssh
-Description: SSH credentials for Storage Server
-```
-
-Save ✅
-
----
-
-### 🔁 Step 6: Create Jenkins Job
+### 🔁 Step 4: Create Jenkins Job
 
 1. From Dashboard → New Item
 
@@ -181,37 +128,231 @@ Save ✅
 ```bash
 nautilus-app-deployment
 ```
-then click ok
 
 3. Select Freestyle project
 
+then click ok
+
 4. Under Source Code Management → Git:
-   - Repository URL:
-   ```bash
-   http://git.stratos.xfusioncorp.com/sarah/web.git
-   ```
+```yaml
+Repository URL: http://git.stratos.xfusioncorp.com/sarah/web.git
+Credentials: (none, since it's HTTP access)
+Branch: */master
+```
 
-   - Credentials: `sarah-ssh`
-
-   - Branch:
-   ```bash
-   */master
-   ```
-
----
-
-### 🔁 Step 7: Enable Trigger
-
-Under Build Triggers, check:
+5. Under Build Triggers, check:
 ```vbnet
 ☑ Poll SCM
 ```
 
-In the Schedule field, enter:
+6. In the Schedule field, enter:
 ```bash
 * * * * *
 ```
 > That means Jenkins will check the repo every minute for new commits on master.
 
+
+7. Click Save ✅
+
+8. Then build
+
+> nautilus-app-deployment built succesfully
+
 ---
+
+### 🔁 Step 5: Generate SSH Key for Jenkins → Storage Server
+
+1. login to jenkinsusing CLI
+```bash
+ssh jenkins@jenkins
+```
+> pw: j@rv!s
+
+2. Login as super user
+```bash
+sudo su
+```
+
+3. Generate key
+```bash
+ssh-keygen -t rsa
+```
+> just enter leave blank every prompt question after this
+
+4. View and Copy the Public Key
+```bash
+cd .ssh/
+cat id_rsa.pub
+```
+
+5. Open new terminal, then login as natasha
+```bash
+ssh natasha@ststor01
+```
+> pw: Bl@kW
+
+Login as super user
+```bash
+sudo su
+```
+6. Make a directory for ssh
+```bash
+mkdir .ssh
+```
+
+then copy file to it
+```bash
+cat > .ssh/authorized_keys
+```
+press enter then paste the public key. (In the image it shows .ssh/authorized_key -> this is wrong)
+> It will allow jenkins server to connect to natasha via ssh without prompting a password.
+
+---
+
+### 🔁 Step 6: Ownership for Deployment Directory
+
+Go back to CLI where you login to natasha server, then enter this
+```bash
+cd /var/www/
+chown natasha -R html/
+```
+
+then verify:
+```bash
+ls -l
+```
+> permission granted to natasha: `drwxr-xr-x 3 natasha root 4096 Aug 18 09:57 html`
+
+---
+
+### 🔁 Step 6: Rebuild the job
+
+Now, under build steps choose:
+```text
+execute shell
+```
+
+then enter this:
+```bash
+scp * natasha@ststor01:/var/www/html
+```
+
+then build now
+> Successfully built
+
+---
+
+### 🔁 Step 7: Clone and Update the Repository
+
+login using sarah
+```bash
+ssh sarah@ststor01
+```
+> pw: Sarah_pass123
+
+Check current directory:
+```bash
+pwd
+```
+
+clone the repo
+```bash
+git clone http://git.stratos.xfusioncorp.com/sarah/web.git
+```
+> issue there's already a text file name web
+
+fix
+```bash
+ls #to check if there's a web.git file
+rm -rf web #to remove the file
+```
+
+then enter again
+```bash
+git clone http://git.stratos.xfusioncorp.com/sarah/web.git
+```
+
+---
+
+### 🔁 Step 8: Update the html file
+
+verify if there's an index.html file
+```bash
+cd web/
+ls
+```
+> there's an index.html file
+
+check the content
+```bash
+cat index.html
+```
+
+now, update the index.html
+```bash
+cat > index.html
+```
+then enter:
+```text
+Welcome to xFusionCorp Industries
+```
+
+then ctrl+C to end.
+
+---
+
+### 🔁 Step 9: Commit and Push Changes
+
+in the same CLI using Sarah's login
+```bash
+git commit -am "Updated index.html"
+```
+
+then push to master branch
+```bash
+git push origin master
+```
+
+---
+
+### 🔁 Step 10: Verify the Changes
+
+Open Jenkins → Check Build History
+> The job should run automatically and succeed.
+
+Open the App button (Load Balancer URL):
+✅ The website should now display:
+```html
+Welcome to xFusionCorp Industries
+```
+
+---
+
+## 🗝️ Key Commands and Configs
+
+| Command / Config                          | Description                           |
+| ----------------------------------------- | ------------------------------------- |
+| `scp -r * natasha@ststor01:/var/www/html` | Deploys latest code to Storage Server |
+| `git push origin master`                  | Triggers Jenkins job automatically    |
+| `/var/www/html`                           | Shared web root for all app servers   |
+| `Poll SCM: * * * * *`                     | Checks for new commits every minute   |
+
+
+---
+
+## 🎯 Task Completed
+
+| ✅  | Item                                            |
+| -- | ----------------------------------------------- |
+| ✔️ | HTTPD configured on all App Servers (port 8080) |
+| ✔️ | Jenkins job **nautilus-app-deployment** created |
+| ✔️ | Jenkins → Natasha SSH connection established    |
+| ✔️ | `/var/www/html` owned by `sarah`                |
+| ✔️ | Jenkins job auto-triggers on Git push           |
+| ✔️ | Latest code successfully deployed               |
+| ✔️ | Verified updated content via Load Balancer      |
+
+
+
+
 
