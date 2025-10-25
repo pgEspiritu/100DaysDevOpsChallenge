@@ -266,105 +266,87 @@ Credentials: banner
 
 1. From Jenkins Dashboard → New Item
 2. Enter name:
-   ```bash
-   nautilus-app-deployment
-   ```
+```bash
+nautilus-app-deployment
+```
 3. Select Freestyle project → OK
 
 4. Under Source Code Management
-   Git Repository URL:
-   ```bash
-   http://git.stratos.xfusioncorp.com/sarah/web.git
-   ```
+Git Repository URL:
+```bash
+http://git.stratos.xfusioncorp.com/sarah/web.git
+```
 
-   Credential: sarah
+Credential: sarah
 
-   Branch to build:
-   ```bash
-   */master
-   ```
+Branch to build:
+```bash
+*/master
+```
 
-5. Under Build Triggers, check:
-   ```vbnet
-   ☑ Trigger build remotely
-   ```
-
-   Authentication Token:
-   ```bash
-   KODEKLOUDJENKINS
-   ```
-   > Take note of the URL to trigger remotely
-
-6. Under Environment
-   ```vbnet
-   ☑ Send files or execute commands over SSH after the build runs
-   ```
-
-   Then input the following:
-   ```bash
-   Name: Ststor01 #Already available
-   Source files: **/*
-   ```
+5. Under Build Section
+- Click Add build step → Execute shell
+  Enter the ff:
+```bash
+#!/bin/bash
+echo "Pulling latest changes from web repository..."
+cd /var/www/html
+sudo git pull origin master
+echo "Deployment completed successfully!"
+```   
    
-7. Apply and Save
-
-8. Build Now
-   > successful build ✅
-
+6. Post-build action
+- Click Add post-build action → Build other projects
+- Projects to build: manage-services
+- ✓ Check: "Trigger only if build is stable"
+  
 ---
 
-### 🔁 Step 6: Configure Webhook for Repo
+### 🔁 Step 6: Create manage-services Job
 
-1. Login in Gitea using Sarah
-2. In Gitea, 
-   ```go
-   sarah/web - Settings - webhooks - add webhook - gitea
-   ```
-3. Copy URL from Jenkins Build Trigger
-   Target URL
-   ```bash
-   https://8080-port-i5dhijsgjsc5wngx.labs.kodekloud.com/job/nautilus-app-deployment/build?token=KODEKLOUDJENKINS
-   ```
-   > it came from this: Use the following URL to trigger build remotely: JENKINS_URL/job/nautilus-app-deployment/build?token=TOKEN_NAME or /buildWithParameters?token=TOKEN_NAME
-
-4. Add webhook
-
-5. Open the created webhook, then test delivery
-6. 
-
-
----
-
-### 🔁 Step 6: Create Downstream Jenkins Job – manage-services
-1. From Jenkins Dashboard → New Item → Name:
-   ```go
-   manage-services
-   ```
-
-  Select Freestyle project → OK.
-
-2. Build Step:
-Add → Execute shell
+1. From Jenkins Dashboard → New Item
+2. Enter name:
 ```bash
-for server in tony steve banner
-do
-  echo "Restarting Apache on $server..."
+manage-services
+```
+3. Select Freestyle project → OK
+
+4. Build Trigger:
+- ✓ Check: "Build after other projects are built"
+- Projects to watch: nautilus-app-deployment
+- ✓ Check: "Trigger only if build is stable"
+
+6. Build Section:
+- Click Add build step → Execute shell
+- Enter the following command:
+```bash
+#!/bin/bash
+echo "Restarting Apache service on all app servers..."
+
+# Define app servers
+APP_SERVERS=("stapp01" "stapp02" "stapp03")
+
+# Restart httpd on each server
+for server in "${APP_SERVERS[@]}"; do
+  echo "=== Restarting Apache on $server ==="
   ssh $server "sudo systemctl restart httpd"
-  ssh $server "sudo systemctl status httpd | grep Active"
+  
+  # Check service status
+  echo "=== Checking Apache status on $server ==="
+  ssh $server "sudo systemctl status httpd --no-pager"
+  
+  # Verify Apache is running
+  if ssh $server "sudo systemctl is-active httpd" | grep -q "active"; then
+    echo "✓ Apache is running on $server"
+  else
+    echo "✗ Apache failed to start on $server"
+    exit 1
+  fi
+  echo ""
 done
+
+echo "Apache service restarted successfully on all app servers!"
 ```
 
-3. Click Save.
+7. Click Save
 
----
-
-### 🔁 Step 7: Test the Chained Build
-
-1. SSH as Sarah:
-```bash
-ssh sarah@ststor01
-cd ~/web
-echo "Welcome to xFusionCorp Chained Build!" > index.html
-git commit -am "Updated index.html for chained build test"
-git push origin master
-```
