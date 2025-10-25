@@ -81,6 +81,126 @@ Gitea
 
 ---
 
+### 🔁 Step 2: Install Necessary Jenkins Plugins
+  
+1. In Jenkins, go to:
+```go
+Manage Jenkins → Plug-ins
+```
+ 
+2. Install the following:
+- SSH
+- SSH Credentials
+- SSH Build Agents
+- Git
+- Credentials
+- CloudBees
+- Gitea
+- Gitea check
+- Publish Over SSH
+- Java Framework, update the java as well
+  
+3. Restart Jenkins after installation
+
+---
+
+### 🔁 Step 3: Create SSH Credentials for Storage and App Server
+
+1. In Jenkins, go to:
+```go
+Manage Jenkins → Credentials → System → Global credentials (unrestricted)
+```
+
+2. Click Add Credentials and enter:
+
+For Sarah
+```nginx
+Kind: Username with password
+Scope: Global
+Username: sarah
+Password: Sarah_pass123
+ID: ststor01-ssh
+Description: SSH credentials for Storage Server (ststor01)
+```
+
+For Tony
+```nginx
+Kind: Username with password
+Scope: Global
+Username: tony
+Password: Ir0nM@n
+ID: stapp01-ssh
+Description: SSH credentials for App Server 1 (stapp01)
+```
+
+For Steve
+```nginx
+Kind: Username with password
+Scope: Global
+Username: steve
+Password: Am3rica
+ID: stapp02-ssh
+Description: SSH credentials for App Server 2 (stapp02)
+```
+
+For Steve
+```nginx
+Kind: Username with password
+Scope: Global
+Username: banner
+Password: BigGr33n
+ID: stapp03-ssh
+Description: SSH credentials for App Server 3 (stapp03)
+```
+
+3. Click Create ✅
+
+---
+
+### 🔁 Step 4: Create Remote SSH for Storage and App Server
+
+1. In Jenkins, go to:
+```go
+Manage Jenkins → System
+```
+
+2. Under SSH remote hosts, add each server (sarah, tony, steve, banner)
+
+For sarah
+```bash
+Hostname: ststor01
+Port: 22
+Credentials: sarah
+☑
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ### 🔁 Step 2: Verify Storage and Shared Directory
 
 1. SSH into the Storage Server:
