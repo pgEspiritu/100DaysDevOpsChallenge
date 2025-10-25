@@ -143,7 +143,7 @@ ID: stapp02-ssh
 Description: SSH credentials for App Server 2 (stapp02)
 ```
 
-For Steve
+For Banner
 ```nginx
 Kind: Username with password
 Scope: Global
