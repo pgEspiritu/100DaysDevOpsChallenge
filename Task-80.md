@@ -288,34 +288,50 @@ Credentials: banner
   ```vbnet
   ☑ Trigger build remotely
   ```
-  
-6. In the Schedule field, enter:
+
+  Authentication Token:
   ```bash
-  * * * * *
+  KODEKLOUDJENKINS
   ```
-> Checks for new commits on master every minute.
+  > Take note of the URL to trigger remotely
 
-7. Build Step:
-Add → Execute shell
-```bash
-cd /var/www/html
-git pull origin master
-```
+6. Under Environment
+   ```vbnet
+   ☑ Send files or execute commands over SSH after the build runs
+   ```
 
-8. Post-build Action:
-- Add → Build other projects
-- Enter:
-  ```bash
-  manage-services
-  ```
-- Choose:
-  ```pgsql
-  Trigger only if build is stable
-  ```
+   Then input the following:
+   ```bash
+   Name: Ststor01 #Already available
+   Source files: **/*
+   ```
+   
+7. Apply and Save
 
-9. Click Save.
+8. Build Now
+   > successful build ✅
 
-> build will fail since need to create manage-services job
+---
+
+### 🔁 Step 6: Configure Webhook for Repo
+
+1. Login in Gitea using Sarah
+2. In Gitea, 
+   ```go
+   sarah/web - Settings - webhooks - add webhook - gitea
+   ```
+3. Copy URL from Jenkins Build Trigger
+   Target URL
+   ```bash
+   https://8080-port-qd5zbvighj3qwk4c.labs.kodekloud.com/job/nautilus-app-deployment/build?token=KODEKLOUDJENKINS
+   ```
+   > it came from this: Use the following URL to trigger build remotely: JENKINS_URL/job/nautilus-app-deployment/build?token=TOKEN_NAME or /buildWithParameters?token=TOKEN_NAME
+
+4. Add webhook
+
+5. Open the created webhook, then test delivery
+6. 
+
 
 ---
 
