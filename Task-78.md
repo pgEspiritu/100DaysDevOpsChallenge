@@ -64,6 +64,8 @@ Jenkins
   Password: Adm!n321
   ```
 
+![Task 78 - Jenkins Conditional Deploy Pipeline.1](images_12/Day-78.1.png)
+
 Gitea
 - URL: Click the Gitea button on top bar
 - Login:
@@ -72,8 +74,12 @@ Gitea
   Password: Sarah_pass123
   ```
 
+![Task 78 - Jenkins Conditional Deploy Pipeline.2](images_12/Day-78.2.png)
+
 - Verify repository exists:
 > web_app → contains the static website code
+
+![Task 78 - Jenkins Conditional Deploy Pipeline.3](images_12/Day-78.3.png)
 
 ---
 
@@ -95,6 +101,8 @@ Manage Jenkins → Plug-ins
 
 3. Restart Jenkins after installation
 
+![Task 78 - Jenkins Conditional Deploy Pipeline.4](images_12/Day-78.4.png)
+
 ---
 
 ### 🔁 Step 3: Update java version in Storage Server
@@ -114,6 +122,8 @@ sudo su
 ```bash
 yum install java-17-openjdk -y
 ```
+
+![Task 78 - Jenkins Conditional Deploy Pipeline.5](images_12/Day-78.5.png)
 
 ---
 
@@ -135,7 +145,9 @@ Description: SSH credentials for Storage Server (ststor01)
 ```
 
 3. Click Create ✅
-   
+
+![Task 78 - Jenkins Conditional Deploy Pipeline.6](images_12/Day-78.6.png)
+
 ---
 
 ### 🔁 Step 5: Configure Jenkins Slave (Storage Server)
@@ -152,7 +164,9 @@ If not created, follow these:
    Storage Server
    ```
 3. Select: Permanent Agent → Click OK
-   
+
+![Task 78 - Jenkins Conditional Deploy Pipeline.7](images_12/Day-78.7.png)
+
 4. Configure the following:
    - Remote root directory: /var/www/html
    - Labels: ststor01
@@ -160,10 +174,14 @@ If not created, follow these:
    - Host: ststor01.stratos.xfusioncorp.com
    - Credentials: Natasha
    - Host Key Verification Strategy: Manually trusted key Verification Strategy
-    
+
+![Task 78 - Jenkins Conditional Deploy Pipeline.8](images_12/Day-78.8.png)
+
 5. Click Save and Launch agent.
 
 > Issue found: Give Jenkins User Permission to /var/www/html
+
+![Task 78 - Jenkins Conditional Deploy Pipeline.9](images_12/Day-78.9.png)
 
    Steps to Fix:
    1. On Storage Server:
@@ -195,8 +213,13 @@ If not created, follow these:
    sudo chmod -R 755 /var/www
    ```
 
+![Task 78 - Jenkins Conditional Deploy Pipeline.10](images_12/Day-78.10.png)
+
    2. Relaunch the Node
    > Now, the node is online ✅
+
+![Task 78 - Jenkins Conditional Deploy Pipeline.11](images_12/Day-78.11.png)
+
 
 ---
 
@@ -208,6 +231,9 @@ If not created, follow these:
    datacenter-webapp-job
    ```
 3. Select Pipeline (❌ Not Multibranch)
+
+![Task 78 - Jenkins Conditional Deploy Pipeline.12](images_12/Day-78.12.png)
+
 4. Under General, check:
    ```csharp
    This project is parameterized
@@ -219,6 +245,8 @@ If not created, follow these:
    Default Value: master
    Description: Specify the branch to deploy (master or feature)
    ```
+
+![Task 78 - Jenkins Conditional Deploy Pipeline.13](images_12/Day-78.13.png)
 
 ---
 
@@ -270,6 +298,8 @@ pipeline {
 
 Click Save.
 
+![Task 78 - Jenkins Conditional Deploy Pipeline.14](images_12/Day-78.14.png)
+
 ---
 
 ### 🔁 Step 8: Run and Verify
@@ -284,8 +314,12 @@ BRANCH = master
 Open Console Output
 > The deployment is successful. ✅
 
+![Task 78 - Jenkins Conditional Deploy Pipeline.15](images_12/Day-78.15.png)
+
 Click the App button on the top bar.
-> Web-App can now be accessed. ✅
+> Web-App can now be accessed with updated content. ✅
+
+![Task 78 - Jenkins Conditional Deploy Pipeline.16](images_12/Day-78.16.png)
 
 or 
 
@@ -297,8 +331,12 @@ BRANCH = feature
 Open Console Output
 > The deployment is successful. ✅
 
+![Task 78 - Jenkins Conditional Deploy Pipeline.17](images_12/Day-78.17.png)
+
 Click the App button on the top bar.
-> Web-App can now be accessed. ✅
+> Web-App can now be accessed with content "update". ✅
+
+![Task 78 - Jenkins Conditional Deploy Pipeline.18](images_12/Day-78.18.png)
 
 ---
 
