@@ -68,6 +68,8 @@ Jenkins
   Password: Adm!n321
   ```
 
+![Task 79 - Jenkins Deployment Job.1](images_12/Day-79.1.png)
+
 Gitea
 - URL: Click the Gitea button on top bar
 - Login:
@@ -75,6 +77,8 @@ Gitea
   Username: sarah
   Password: Sarah_pass123
   ```
+
+![Task 79 - Jenkins Deployment Job.2](images_12/Day-79.2.png)
 
 ---
 
@@ -92,9 +96,18 @@ sudo systemctl status httpd
 
 For Server 1: Tony
 
+![Task 79 - Jenkins Deployment Job.3](images_12/Day-79.3.png)
+![Task 79 - Jenkins Deployment Job.4](images_12/Day-79.4.png)
+
 For Server 2: Steve
 
+![Task 79 - Jenkins Deployment Job.5](images_12/Day-79.5.png)
+![Task 79 - Jenkins Deployment Job.6](images_12/Day-79.6.png)
+
 For Server 3: Banner
+
+![Task 79 - Jenkins Deployment Job.7](images_12/Day-79.7.png)
+![Task 79 - Jenkins Deployment Job.8](images_12/Day-79.8.png)
 
 ---
 
@@ -118,6 +131,8 @@ Manage Jenkins → Plug-ins
 
 3. Restart Jenkins after installation
 
+![Task 79 - Jenkins Deployment Job.9](images_12/Day-79.9.png)
+
 ---
 
 ### 🔁 Step 4: Create Jenkins Job
@@ -133,12 +148,16 @@ nautilus-app-deployment
 
 then click ok
 
+![Task 79 - Jenkins Deployment Job.10](images_12/Day-79.10.png)
+
 4. Under Source Code Management → Git:
 ```yaml
 Repository URL: http://git.stratos.xfusioncorp.com/sarah/web.git
 Credentials: (none, since it's HTTP access)
 Branch: */master
 ```
+
+![Task 79 - Jenkins Deployment Job.11](images_12/Day-79.11.png)
 
 5. Under Build Triggers, check:
 ```vbnet
@@ -151,12 +170,15 @@ Branch: */master
 ```
 > That means Jenkins will check the repo every minute for new commits on master.
 
+![Task 79 - Jenkins Deployment Job.12](images_12/Day-79.12.png)
 
 7. Click Save ✅
 
 8. Then build
 
 > nautilus-app-deployment built succesfully
+
+![Task 79 - Jenkins Deployment Job.13](images_12/Day-79.13.png)
 
 ---
 
@@ -179,11 +201,15 @@ ssh-keygen -t rsa
 ```
 > just enter leave blank every prompt question after this
 
+![Task 79 - Jenkins Deployment Job.14](images_12/Day-79.14.png)
+
 4. View and Copy the Public Key
 ```bash
 cd .ssh/
 cat id_rsa.pub
 ```
+
+![Task 79 - Jenkins Deployment Job.15](images_12/Day-79.15.png)
 
 5. Open new terminal, then login as natasha
 ```bash
@@ -204,8 +230,10 @@ then copy file to it
 ```bash
 cat > .ssh/authorized_keys
 ```
-press enter then paste the public key. (In the image it shows .ssh/authorized_key -> this is wrong)
+press enter then paste the public key. 
 > It will allow jenkins server to connect to natasha via ssh without prompting a password.
+
+> no sample image available. Make sure to follow the steps
 
 ---
 
@@ -221,7 +249,9 @@ then verify:
 ```bash
 ls -l
 ```
-> permission granted to natasha: `drwxr-xr-x 3 natasha root 4096 Aug 18 09:57 html`
+- permission granted to natasha: `drwxr-xr-x 3 natasha root 4096 Aug 18 09:57 html`
+
+> no sample image available. Make sure to follow the steps
 
 ---
 
@@ -236,6 +266,8 @@ then enter this:
 ```bash
 scp * natasha@ststor01:/var/www/html
 ```
+
+![Task 79 - Jenkins Deployment Job.16](images_12/Day-79.16.png)
 
 then build now
 > Successfully built
@@ -299,6 +331,8 @@ Welcome to xFusionCorp Industries
 
 then ctrl+C to end.
 
+![Task 79 - Jenkins Deployment Job.18](images_12/Day-79.18.png)
+
 ---
 
 ### 🔁 Step 9: Commit and Push Changes
@@ -313,6 +347,8 @@ then push to master branch
 git push origin master
 ```
 
+![Task 79 - Jenkins Deployment Job.19](images_12/Day-79.19.png)
+
 ---
 
 ### 🔁 Step 10: Verify the Changes
@@ -325,6 +361,8 @@ Open the App button (Load Balancer URL):
 ```html
 Welcome to xFusionCorp Industries
 ```
+
+![Task 79 - Jenkins Deployment Job.20](images_12/Day-79.20.png)
 
 ---
 
