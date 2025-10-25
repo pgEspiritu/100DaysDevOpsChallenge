@@ -138,7 +138,7 @@ For Steve
 Kind: Username with password
 Scope: Global
 Username: steve
-Password: Am3rica
+Password: Am3ric@
 ID: stapp02-ssh
 Description: SSH credentials for App Server 2 (stapp02)
 ```
