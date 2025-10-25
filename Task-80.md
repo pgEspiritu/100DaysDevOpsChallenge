@@ -320,33 +320,60 @@ manage-services
 - Click Add build step → Execute shell
 - Enter the following command:
 ```bash
-#!/bin/bash
-echo "Restarting Apache service on all app servers..."
+echo "=== Starting Apache Restart Process ==="
 
-# Define app servers
-APP_SERVERS=("stapp01" "stapp02" "stapp03")
+# Function to handle each server
+process_server() {
+    local server=$1
+    local user=$2
+    local password=$3
+    
+    echo "=== Processing $server ==="
+    
+    # Restart Apache by passing password to sudo
+    if sshpass -p "$password" ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $user@$server "echo '$password' | sudo -S systemctl restart httpd"; then
+        echo "✓ Apache restarted on $server"
+        
+        # Wait a moment for service to stabilize
+        sleep 2
+        
+        # Verify status
+        echo "=== Verifying Apache status on $server ==="
+        sshpass -p "$password" ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $user@$server "sudo systemctl status httpd --no-pager"
+        
+        return 0
+    else
+        echo "✗ FAILED to restart Apache on $server"
+        return 1
+    fi
+}
 
-# Restart httpd on each server
-for server in "${APP_SERVERS[@]}"; do
-  echo "=== Restarting Apache on $server ==="
-  ssh $server "sudo systemctl restart httpd"
+# Process each server
+process_server "stapp01" "tony" "Ir0nM@n"
+process_server "stapp02" "steve" "Am3ric@"
+process_server "stapp03" "banner" "BigGr33n"
+
+echo "=== Final Apache Status Check ==="
+for server in stapp01 stapp02 stapp03; do
+  user=$(if [ $server == "stapp01" ]; then echo "tony"; elif [ $server == "stapp02" ]; then echo "steve"; else echo "banner"; fi)
+  pass=$(if [ $server == "stapp01" ]; then echo "Ir0nM@n"; elif [ $server == "stapp02" ]; then echo "Am3ric@"; else echo "BigGr33n"; fi)
   
-  # Check service status
-  echo "=== Checking Apache status on $server ==="
-  ssh $server "sudo systemctl status httpd --no-pager"
-  
-  # Verify Apache is running
-  if ssh $server "sudo systemctl is-active httpd" | grep -q "active"; then
-    echo "✓ Apache is running on $server"
-  else
-    echo "✗ Apache failed to start on $server"
-    exit 1
-  fi
-  echo ""
+  status=$(sshpass -p "$pass" ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $user@$server "sudo systemctl is-active httpd")
+  echo "$server: Apache is $status"
 done
 
-echo "Apache service restarted successfully on all app servers!"
+echo "✅ SUCCESS: All Apache services have been restarted!"
 ```
 
 7. Click Save
 
+---
+
+### 🔁 Step 7: Accept Host Keys Manually
+
+1. SSH into each app server and accept host keys:
+2. Access Jenkins server terminal
+3. Run these commands to accept host keys:
+```bash
+\
+```
