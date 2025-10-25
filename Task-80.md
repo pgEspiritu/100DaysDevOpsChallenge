@@ -272,28 +272,28 @@ Credentials: banner
 3. Select Freestyle project → OK
 
 4. Under Source Code Management
-  Git Repository URL:
-  ```bash
-  http://git.stratos.xfusioncorp.com/sarah/web.git
-  ```
+   Git Repository URL:
+   ```bash
+   http://git.stratos.xfusioncorp.com/sarah/web.git
+   ```
 
-  Credential: sarah
+   Credential: sarah
 
-  Branch to build:
-  ```bash
-  */master
-  ```
+   Branch to build:
+   ```bash
+   */master
+   ```
 
 5. Under Build Triggers, check:
-  ```vbnet
-  ☑ Trigger build remotely
-  ```
+   ```vbnet
+   ☑ Trigger build remotely
+   ```
 
-  Authentication Token:
-  ```bash
-  KODEKLOUDJENKINS
-  ```
-  > Take note of the URL to trigger remotely
+   Authentication Token:
+   ```bash
+   KODEKLOUDJENKINS
+   ```
+   > Take note of the URL to trigger remotely
 
 6. Under Environment
    ```vbnet
