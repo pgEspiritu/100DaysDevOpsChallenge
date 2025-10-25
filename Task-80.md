@@ -323,7 +323,7 @@ Credentials: banner
 3. Copy URL from Jenkins Build Trigger
    Target URL
    ```bash
-   https://8080-port-qd5zbvighj3qwk4c.labs.kodekloud.com/job/nautilus-app-deployment/build?token=KODEKLOUDJENKINS
+   https://8080-port-i5dhijsgjsc5wngx.labs.kodekloud.com/job/nautilus-app-deployment/build?token=KODEKLOUDJENKINS
    ```
    > it came from this: Use the following URL to trigger build remotely: JENKINS_URL/job/nautilus-app-deployment/build?token=TOKEN_NAME or /buildWithParameters?token=TOKEN_NAME
 
