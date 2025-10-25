@@ -334,7 +334,7 @@ Open Console Output
 ![Task 78 - Jenkins Conditional Deploy Pipeline.17](images_12/Day-78.17.png)
 
 Click the App button on the top bar.
-> Web-App can now be accessed with content "update". ✅
+> Web-App can now be accessed with content "updated". ✅
 
 ![Task 78 - Jenkins Conditional Deploy Pipeline.18](images_12/Day-78.18.png)
 
