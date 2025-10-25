@@ -171,130 +171,94 @@ For sarah
 Hostname: ststor01
 Port: 22
 Credentials: sarah
-☑
+☑ pty
 ```
+Check connection.
+> Can't connect to server
+
+To resolve:
+  1. Login as sarah
+  2. Issue found: login failed, password incorrect
+  3. Try to reset sarah password via Storage Server login: Natasha
+     ```bash
+     sudo sarah
+     ```
+     > error: user sarah does not exist or the user entry does not contain all the required fields
+     It means that we need to create user credential for sarah
+  4. Create sarah
+     ```bash
+     sudo useradd sarah  # create user sarah
+     sudo passwd sarah  # create password
+     ```
+     then enter
+     ```bash
+     Sarah_pass123
+     ```
+  5. Verify by log-in as sarah with new password
+     > successfully ✅
+
+  6. Check connection again
+     > successful connection ✅
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-### 🔁 Step 2: Verify Storage and Shared Directory
-
-1. SSH into the Storage Server:
-   ```bash
-   ssh natasha@ststor01   
-   ```
-  
-   pw: Bl@kW
-
-2. Check the repo and doc root:
-   ```bash
-   cd /var/www/html
-   git status
-   ```
-
----
-
-### 🔁 Step 3: Configure Jenkins SSH Access (If Not Yet Done)
-
-1. On Jenkins server:
-login
+For tony
 ```bash
-ssh jenkins@jenkins
+Hostname: stapp01
+Port: 22
+Credentials: tony
+☑ pty
 ```
-pw: j@rv!s
 
-generate key
+For steve
 ```bash
-ssh-keygen -t rsa
-cat ~/.ssh/id_rsa.pub
+Hostname: stapp02
+Port: 22
+Credentials: steve
+☑ pty
 ```
-   
-3. Copy the public key to each app server (tony, steve, banner):
 
-login to each server:
-Server 1:
+For banner
 ```bash
-ssh tony@stapp01
-```
-pw: Ir0nM@n
-
-Server 2:
-```bash
-ssh steve@stapp02
-```
-pw: Am3ric@
-
-Server 3:
-```bash
-ssh banner@stapp03
-```
-pw: BigGr33n
-
-Enter this to each server:
-```bash
-mkdir -p ~/.ssh
-cat > .ssh/authorized_keys 
-```
-Paste the public key then ctrl + C to end
-
-give permission:
-```bash
-chmod 600 ~/.ssh/authorized_keys
+Hostname: stapp03
+Port: 22
+Credentials: banner
+☑ pty
 ```
 
-> This ensures Jenkins can SSH into each app server to restart Apache.
+3. Under Public over ssh add storage server:
+   - SSH Server -> Click Add
+   - enter the following:
+     ```bash
+     Name: ststor01
+     Hostname: ststor01
+     Username: natasha
+     Remote Directory: /data
+     ☑ Use Password authentication, or use different key
+     Password: Bl@kW
+     ```
+   - Test Configuration
+     > Issue found: `jenkins.plugins.publish_over.BapPublisherException: Failed to connect and initialize SSH connection. Message: [Failed to change to remote directory [/data]]`
 
-For Tony:
-
-For Steve:
-
-For Banner:
-
----
-
-### 🔁 Step 4: Install Necessary Jenkins Plugins
-  
-1. In Jenkins, go to:
-```go
-Manage Jenkins → Plug-ins
-```
- 
-2. Install the following:
-- SSH
-- SSH Credentials
-- SSH Build Agents
-- Git
-- Credentials
-- CloudBees
-- Gitea
-- Gitea check
-- Java Framework, update the java as well
-  
-3. Restart Jenkins after installation
+     Fix:
+     1. log-in as natasha
+        ```bash
+        ssh natasha@ststor01
+        ```
+        pw: Bl@kW
+     2. Check if the data folder is present
+        ```bash
+        ls -ld /data
+        ```
+        > No such file or directory, therefore create a data folder
+     3. Make a data directory
+        ```bash
+        sudo mkdir -p /data
+        ```
+     4. Give permission to file:
+        ```bash
+        sudo chown natasha:natasha /data
+        sudo chmod 755 /data
+        ```
 
 ---
 
@@ -312,7 +276,8 @@ Manage Jenkins → Plug-ins
   ```bash
   http://git.stratos.xfusioncorp.com/sarah/web.git
   ```
-  (since this is already a local repo on Storage Server)
+
+  Credential: sarah
 
   Branch to build:
   ```bash
@@ -321,7 +286,7 @@ Manage Jenkins → Plug-ins
 
 5. Under Build Triggers, check:
   ```vbnet
-  ☑ Poll SCM
+  ☑ Trigger build remotely
   ```
   
 6. In the Schedule field, enter:
