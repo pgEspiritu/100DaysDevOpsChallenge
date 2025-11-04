@@ -1,4 +1,4 @@
-# ☸️ 100 Days of DevOps – Day 80
+<img width="898" height="436" alt="Day-80 1" src="https://github.com/user-attachments/assets/cfd40e0e-5d45-4a00-b070-9c8a63ceb765" /># ☸️ 100 Days of DevOps – Day 80
 ## ✅ Task: Jenkins Chained Builds
 
 ```text
@@ -69,6 +69,8 @@ Jenkins
   Password: Adm!n321
   ```
 
+![Task 80 - Jenkins Chained Builds.1](images_12/Day-79.1.png)
+
 Gitea
 - URL: Click the Gitea button on top bar
 - Login:
@@ -77,6 +79,8 @@ Gitea
   Password: Sarah_pass123
   ```
 - check if there's `web` repo
+
+![Task 80 - Jenkins Chained Builds.1](images_12/Day-79.2.png)
 
 ---
 
@@ -99,6 +103,8 @@ Manage Jenkins → Plug-ins
 - Publish Over SSH
   
 3. Restart Jenkins after installation
+
+![Task 80 - Jenkins Chained Builds.3](images_12/Day-80.3.png)
 
 ---
 
@@ -126,6 +132,9 @@ For stapp03:
 banner ALL=(ALL) NOPASSWD: ALL
 ```
 
+![Task 80 - Jenkins Chained Builds.1](images_12/Day-80.1.png)
+![Task 80 - Jenkins Chained Builds.2](images_12/Day-80.2.png)
+
 ---
 
 ### 🔁 Step 4: Create Jenkins Credentials for Storage and App Server
@@ -146,6 +155,8 @@ Password: Sarah_pass123
 ID: sarah
 ```
 
+![Task 80 - Jenkins Chained Builds.4](images_12/Day-80.4.png)
+
 For App Server 3: Tony
 ```nginx
 Kind: Username with password
@@ -154,6 +165,8 @@ Username: tony
 Password: Ir0nM@n
 ID: tony
 ```
+
+![Task 80 - Jenkins Chained Builds.5](images_12/Day-80.5.png)
 
 For App Server 2: Steve
 ```nginx
@@ -164,6 +177,8 @@ Password: Am3ric@
 ID: steve
 ```
 
+![Task 80 - Jenkins Chained Builds.6](images_12/Day-80.6.png)
+
 For App Server 3: Banner
 ```nginx
 Kind: Username with password
@@ -172,6 +187,8 @@ Username: banner
 Password: BigGr33n
 ID: banner
 ```
+
+![Task 80 - Jenkins Chained Builds.7](images_12/Day-80.7.png)
 
 For Storage Server: Natasha
 ```nginx
@@ -182,7 +199,11 @@ Password: Bl@kW
 ID: natasha
 ```
 
+![Task 80 - Jenkins Chained Builds.8](images_12/Day-80.8.png)
+
 3. Click Create ✅
+
+![Task 80 - Jenkins Chained Builds.9](images_12/Day-80.9.png)
 
 ---
 
@@ -203,6 +224,8 @@ Credentials: tony
 ☑ pty
 ```
 
+![Task 80 - Jenkins Chained Builds.10](images_12/Day-80.10.png)
+
 For steve
 ```bash
 Hostname: stapp02
@@ -211,6 +234,8 @@ Credentials: steve
 ☑ pty
 ```
 
+![Task 80 - Jenkins Chained Builds.11](images_12/Day-80.11.png)
+
 For banner
 ```bash
 Hostname: stapp03
@@ -218,6 +243,8 @@ Port: 22
 Credentials: banner
 ☑ pty
 ```
+
+![Task 80 - Jenkins Chained Builds.12](images_12/Day-80.12.png)
 
 > Make sure that the connection for each is successful
 
@@ -233,7 +260,10 @@ Credentials: banner
      Password: Bl@kW
      ```
    - Test Configuration: "Successful"
-   
+
+![Task 80 - Jenkins Chained Builds.13](images_12/Day-80.13.png)
+![Task 80 - Jenkins Chained Builds.14](images_12/Day-80.14.png)
+
 ---
 
 ### 🔁 Step 6: Create Upstream Job – nautilus-app-deployment
@@ -244,6 +274,9 @@ Credentials: banner
 nautilus-app-deployment
 ```
 3. Select Freestyle project → OK
+
+![Task 80 - Jenkins Chained Builds.15](images_12/Day-80.15.png)
+
 
 4. Under Source Code Management
 Git Repository URL:
@@ -258,17 +291,23 @@ Branch to build:
 */master
 ```
 
+![Task 80 - Jenkins Chained Builds.16](images_12/Day-80.16.png)
+
 5. Under Build Environment
 - ✓ Send files or execute commands over SSH after the build runs
 - SSH Server: `ststor01`
 - Transfer Set:
   - Source files: **/*
 > Leave other options empty
-   
+
+![Task 80 - Jenkins Chained Builds.17](images_12/Day-80.17.png)
+
 6. Post-build action
 - Click Add post-build action → Build other projects
 - Projects to build: manage-services
 - ✓ Check: "Trigger only if build is stable"
+
+![Task 80 - Jenkins Chained Builds.22](images_12/Day-80.22.png)
 
 7. Apply and save
    
@@ -283,10 +322,14 @@ manage-services
 ```
 3. Select Freestyle project → OK
 
+![Task 80 - Jenkins Chained Builds.18](images_12/Day-80.18.png)
+
 4. Build Trigger:
 - ✓ Check: "Build after other projects are built"
 - Projects to watch: nautilus-app-deployment
 - ✓ Check: "Trigger only if build is stable"
+
+![Task 80 - Jenkins Chained Builds.19](images_12/Day-80.19.png)
 
 5. Build Steps:
 Add 3 separate "Execute shell script on remote host using SSH":
@@ -299,6 +342,9 @@ In each command, enter this:
 sudo systemctl restart httpd && sudo systemctl status httpd --no-pager
 ```
 
+![Task 80 - Jenkins Chained Builds.20](images_12/Day-80.20.png)
+![Task 80 - Jenkins Chained Builds.21](images_12/Day-80.21.png)
+
 6. Click Save
 
 ---
@@ -306,8 +352,16 @@ sudo systemctl restart httpd && sudo systemctl status httpd --no-pager
 ### 🔁 Step 8: Test the Pipeline
 
 - Build nautilus-app-deployment manually
+
+![Task 80 - Jenkins Chained Builds.23](images_12/Day-80.23.png)
+
 - Verify manage-services triggers automatically
+
+![Task 80 - Jenkins Chained Builds.24](images_12/Day-80.24.png)
+
 - Check app servers serve content via load balancer
+
+![Task 80 - Jenkins Chained Builds.25](images_12/Day-80.25.png)
 
 ---
 
