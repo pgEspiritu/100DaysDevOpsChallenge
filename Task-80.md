@@ -47,15 +47,6 @@ in case your task is marked incomplete. You may also consider using a screen rec
 
 ---
 
-📝 Task Summary
-
-| # | Task                              | Description                                        |
-| - | --------------------------------- | -------------------------------------------------- |
-| 1 | Create Deployment Job             | `nautilus-app-deployment` (upstream)               |
-| 2 | Create Service Management Job     | `manage-services` (downstream)                     |
-| 3 | Configure Chained Build           | Trigger `manage-services` only on successful build |
-| 4 | Restart Apache on All App Servers | Restart `httpd` after deployment success           |
-| 5 | Validate End-to-End Chain         | Push update → auto deploy → auto restart Apache    |
 
 ---
 
@@ -98,13 +89,38 @@ Manage Jenkins → Plug-ins
 - Gitea
 - Gitea check
 - Publish Over SSH
-- Java Framework, update the java as well
   
 3. Restart Jenkins after installation
 
 ---
 
-### 🔁 Step 3: Create SSH Credentials for Storage and App Server
+### 🔁 Step 3: Enable Passwordless sudo in all app servers
+
+SSH to each app server and run:
+```bash
+sudo visudo
+```
+
+then at the end, add this:
+
+For stapp01:
+```yaml
+tony ALL=(ALL) NOPASSWD: ALL
+```
+
+For stapp02:
+```yaml
+steve ALL=(ALL) NOPASSWD: ALL
+```
+
+For stapp03:
+```yaml
+banner ALL=(ALL) NOPASSWD: ALL
+```
+
+---
+
+### 🔁 Step 4: Create Jenkins Credentials for Storage and App Server
 
 1. In Jenkins, go to:
 ```go
@@ -113,51 +129,56 @@ Manage Jenkins → Credentials → System → Global credentials (unrestricted)
 
 2. Click Add Credentials and enter:
 
-For Sarah
+For Storage Server: Sarah
 ```nginx
 Kind: Username with password
 Scope: Global
 Username: sarah
 Password: Sarah_pass123
-ID: ststor01-ssh
-Description: SSH credentials for Storage Server (ststor01)
+ID: sarah
 ```
 
-For Tony
+For App Server 3: Tony
 ```nginx
 Kind: Username with password
 Scope: Global
 Username: tony
 Password: Ir0nM@n
-ID: stapp01-ssh
-Description: SSH credentials for App Server 1 (stapp01)
+ID: tony
 ```
 
-For Steve
+For App Server 2: Steve
 ```nginx
 Kind: Username with password
 Scope: Global
 Username: steve
 Password: Am3ric@
-ID: stapp02-ssh
-Description: SSH credentials for App Server 2 (stapp02)
+ID: steve
 ```
 
-For Banner
+For App Server 3: Banner
 ```nginx
 Kind: Username with password
 Scope: Global
 Username: banner
 Password: BigGr33n
-ID: stapp03-ssh
-Description: SSH credentials for App Server 3 (stapp03)
+ID: banner
+```
+
+For Storage Server: Natasha
+```nginx
+Kind: Username with password
+Scope: Global
+Username: natasha
+Password: Bl@kW
+ID: natasha
 ```
 
 3. Click Create ✅
 
 ---
 
-### 🔁 Step 4: Create Remote SSH for Storage and App Server
+### 🔁 Step 5: Configure Remote SSH for Storage and App Server
 
 1. In Jenkins, go to:
 ```go
@@ -165,41 +186,6 @@ Manage Jenkins → System
 ```
 
 2. Under SSH remote hosts, add each server (sarah, tony, steve, banner)
-
-For sarah
-```bash
-Hostname: ststor01
-Port: 22
-Credentials: sarah
-☑ pty
-```
-Check connection.
-> Can't connect to server
-
-To resolve:
-  1. Login as sarah
-  2. Issue found: login failed, password incorrect
-  3. Try to reset sarah password via Storage Server login: Natasha
-     ```bash
-     sudo sarah
-     ```
-     > error: user sarah does not exist or the user entry does not contain all the required fields
-     It means that we need to create user credential for sarah
-  4. Create sarah
-     ```bash
-     sudo useradd sarah  # create user sarah
-     sudo passwd sarah  # create password
-     ```
-     then enter
-     ```bash
-     Sarah_pass123
-     ```
-  5. Verify by log-in as sarah with new password
-     > successfully ✅
-
-  6. Check connection again
-     > successful connection ✅
-
 
 For tony
 ```bash
@@ -225,6 +211,8 @@ Credentials: banner
 ☑ pty
 ```
 
+> Make sure that the connection for each is successful
+
 3. Under Public over ssh add storage server:
    - SSH Server -> Click Add
    - enter the following:
@@ -232,37 +220,15 @@ Credentials: banner
      Name: ststor01
      Hostname: ststor01
      Username: natasha
-     Remote Directory: /data
+     Remote Directory: /var/www/html
      ☑ Use Password authentication, or use different key
      Password: Bl@kW
      ```
-   - Test Configuration
-     > Issue found: `jenkins.plugins.publish_over.BapPublisherException: Failed to connect and initialize SSH connection. Message: [Failed to change to remote directory [/data]]`
-
-     Fix:
-     1. log-in as natasha
-        ```bash
-        ssh natasha@ststor01
-        ```
-        pw: Bl@kW
-     2. Check if the data folder is present
-        ```bash
-        ls -ld /data
-        ```
-        > No such file or directory, therefore create a data folder
-     3. Make a data directory
-        ```bash
-        sudo mkdir -p /data
-        ```
-     4. Give permission to file:
-        ```bash
-        sudo chown natasha:natasha /data
-        sudo chmod 755 /data
-        ```
-
+   - Test Configuration: "Successful"
+   
 ---
 
-### 🔁 Step 5: Create Upstream Job – nautilus-app-deployment
+### 🔁 Step 6: Create Upstream Job – nautilus-app-deployment
 
 1. From Jenkins Dashboard → New Item
 2. Enter name:
@@ -284,25 +250,23 @@ Branch to build:
 */master
 ```
 
-5. Under Build Section
-- Click Add build step → Execute shell
-  Enter the ff:
-```bash
-#!/bin/bash
-echo "Pulling latest changes from web repository..."
-cd /var/www/html
-sudo git pull origin master
-echo "Deployment completed successfully!"
-```   
+5. Under Build Environment
+- ✓ Send files or execute commands over SSH after the build runs
+- SSH Server: `ststor01`
+- Transfer Set:
+  - Source files: **/*
+> Leave other options empty
    
 6. Post-build action
 - Click Add post-build action → Build other projects
 - Projects to build: manage-services
 - ✓ Check: "Trigger only if build is stable"
-  
+
+7. Apply and save
+   
 ---
 
-### 🔁 Step 6: Create manage-services Job
+### 🔁 Step 7: Create manage-services Job
 
 1. From Jenkins Dashboard → New Item
 2. Enter name:
@@ -316,72 +280,24 @@ manage-services
 - Projects to watch: nautilus-app-deployment
 - ✓ Check: "Trigger only if build is stable"
 
-6. Build Section:
-- Click Add build step → Execute shell
-- Enter the following command:
-```bash
-#!/bin/bash
-echo "=== Starting Apache Service Restart Process ==="
+5. Build Steps:
+Add 3 separate "Execute shell script on remote host using SSH":
+- SSH Site 1: tony@stapp01:22
+- SSH Site 2: steve@stapp02:22
+- SSH Site 3: banner@stapp03:22
 
-# Method 1: Using sshpass (if available)
-restart_apache() {
-  local server=$1
-  local user=$2
-  local password=$3
-  
-  echo "=== Processing $server ==="
-  
-  # Restart Apache service
-  echo "Restarting Apache service..."
-  if sshpass -p "$password" ssh -o StrictHostKeyChecking=no $user@$server "sudo systemctl restart httpd"; then
-      echo "✓ Apache restarted successfully on $server"
-      
-      # Check service status
-      echo "Checking Apache status..."
-      if sshpass -p "$password" ssh -o StrictHostKeyChecking=no $user@$server "sudo systemctl is-active httpd" | grep -q "active"; then
-          echo "✓ Apache is actively running on $server"
-      else
-          echo "✗ Apache is not active on $server"
-          exit 1
-      fi
-  else
-      echo "✗ Failed to restart Apache on $server"
-      exit 1
-  fi
-  echo ""
-}
-
-# Restart Apache on all app servers
-restart_apache "stapp01" "tony" "Ir0nM@n"
-restart_apache "stapp02" "steve" "Am3ric@"
-restart_apache "stapp03" "banner" "BigGr33n"
-
-echo "✅ SUCCESS: Apache service restarted on all application servers!"
+In each command, enter this:
+```
+sudo systemctl restart httpd && sudo systemctl status httpd --no-pager
 ```
 
-7. Click Save
+6. Click Save
 
 ---
 
-### 🔁 Step 7: Fix Sudoers Configuration 
+### 🔁 Step 8: Test the Pipeline
 
-1. SSH into each app server and accept host keys:
-2. Run these commands to accept host keys:
+- Build nautilus-app-deployment manually
+- Verify manage-services triggers automatically
+- Check app servers serve content via load balancer
 
-On stapp01:
-```bash
-echo "tony ALL=(ALL) NOPASSWD: /bin/systemctl restart httpd, /bin/systemctl status httpd, /bin/systemctl is-active httpd" | sudo tee -a /etc/sudoers
-sudo cat /etc/sudoers | grep tony
-```
-
-On stapp02:
-```bash
-echo "steve ALL=(ALL) NOPASSWD: /bin/systemctl restart httpd, /bin/systemctl status httpd, /bin/systemctl is-active httpd" | sudo tee -a /etc/sudoers
-sudo cat /etc/sudoers | grep tony
-```
-
-On stapp03:
-```bash
-echo "banner ALL=(ALL) NOPASSWD: /bin/systemctl restart httpd, /bin/systemctl status httpd, /bin/systemctl is-active httpd" | sudo tee -a /etc/sudoers
-sudo cat /etc/sudoers | grep tony
-```
