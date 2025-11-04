@@ -47,6 +47,14 @@ in case your task is marked incomplete. You may also consider using a screen rec
 
 ---
 
+📝 Task Summary
+| # | Task                      | Description                                                |
+| - | ------------------------- | ---------------------------------------------------------- |
+| 1 | Setup Jenkins Credentials | For Storage and all App Servers                            |
+| 2 | Create Upstream Job       | `nautilus-app-deployment` – Pull and deploy latest changes |
+| 3 | Create Downstream Job     | `manage-services` – Restart Apache on all app servers      |
+| 4 | Configure Chained Build   | Trigger `manage-services` only if deployment is stable     |
+| 5 | Test & Verify             | Ensure successful restart and visible changes via LB URL   |
 
 ---
 
@@ -300,4 +308,18 @@ sudo systemctl restart httpd && sudo systemctl status httpd --no-pager
 - Build nautilus-app-deployment manually
 - Verify manage-services triggers automatically
 - Check app servers serve content via load balancer
+
+---
+
+## 🎯 Task Completed
+
+| ✅  | Item                                              |
+| -- | ------------------------------------------------- |
+| ✔️ | Jenkins credentials configured for all servers    |
+| ✔️ | SSH connections verified successfully             |
+| ✔️ | `nautilus-app-deployment` (upstream) job created  |
+| ✔️ | `manage-services` (downstream) job configured     |
+| ✔️ | Apache restarted automatically on all app servers |
+| ✔️ | Jenkins chained build trigger works as expected   |
+| ✔️ | Verified app content via Load Balancer URL        |
 
