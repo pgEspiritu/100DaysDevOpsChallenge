@@ -1,4 +1,4 @@
-<img width="898" height="436" alt="Day-80 1" src="https://github.com/user-attachments/assets/cfd40e0e-5d45-4a00-b070-9c8a63ceb765" /># ☸️ 100 Days of DevOps – Day 80
+# ☸️ 100 Days of DevOps – Day 80
 ## ✅ Task: Jenkins Chained Builds
 
 ```text
