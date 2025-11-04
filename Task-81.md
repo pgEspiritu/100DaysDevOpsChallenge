@@ -49,6 +49,16 @@ in case your task is marked incomplete. You may also consider using a screen rec
 
 📝 Task Summary
 
+| # | Task                       | Description                                   |
+| - | -------------------------- | --------------------------------------------- |
+| 1 | Access Jenkins & Gitea     | Verify login and repositories                 |
+| 2 | Install Jenkins Plugins    | Install pipeline-related and SSH plugins      |
+| 3 | Enable Passwordless sudo   | Allow Jenkins deployment commands             |
+| 4 | Create Jenkins Credentials | Add SSH credentials for servers               |
+| 5 | Verify Jenkins Environment | Check `sshpass` and SSH setup                 |
+| 6 | Update Repository          | Modify `index.html` and push to origin        |
+| 7 | Create Pipeline Job        | Create `deploy-job` with Deploy & Test stages |
+| 8 | Test Pipeline              | Verify site accessibility via Load Balancer   |
 
 ---
 
@@ -99,6 +109,7 @@ Manage Jenkins → Plug-ins
 3. Restart Jenkins after installation
 
 ![Task 81 - Jenkins Multistage Pipeline.3](images_12/Day-81.3.png)
+![Task 81 - Jenkins Multistage Pipeline.4](images_12/Day-81.4.png)
 
 ---
 
@@ -121,6 +132,8 @@ if not,
 sudo yum install sshpass -y
 ```
 
+![Task 81 - Jenkins Multistage Pipeline.5](images_12/Day-81.5.png)
+
 ---
 
 ### 🔁 Step 5: Update Repo Content
@@ -134,6 +147,8 @@ sudo yum install sshpass -y
 5. Change content to: "Welcome to xFusionCorp Industries"
 6. Commit changes with message: "Update welcome message"
 
+![Task 81 - Jenkins Multistage Pipeline.6](images_12/Day-81.6.png)
+![Task 81 - Jenkins Multistage Pipeline.7](images_12/Day-81.7.png)
 
 #### Method 2 using CLI (SSH to Storage Server Nataasha)
 
@@ -150,6 +165,8 @@ git commit -m "Update welcome message"
 git push origin master
 ```
 
+![Task 81 - Jenkins Multistage Pipeline.8](images_12/Day-81.8.png)
+
 error: failed to push some refs to 'http://git.stratos.xfusioncorp.com/sarah/web.git'
 > This error means that the remote repository has new commits that your local branch doesn’t have. To fix it safely, you need to pull the remote changes first, merge them, and then push again.
 
@@ -163,11 +180,16 @@ Step 2 (Push your changes again):
 git push origin master
 ```
 
+![Task 81 - Jenkins Multistage Pipeline.9](images_12/Day-81.9.png)
+
 ---
 
 ### 🔁 Step 6: Create a Pipeline Job
 
 1. Go Jenkins: New Item → "deploy-job" → Pipeline → OK
+
+![Task 81 - Jenkins Multistage Pipeline.10](images_12/Day-81.10.png)
+
 2. Under Definition: Pipeline script
 3. Copy and paste the pipeline script below
 ```script
@@ -271,11 +293,34 @@ pipeline {
 
 4. Save the job
 
+![Task 81 - Jenkins Multistage Pipeline.11](images_12/Day-81.11.png)
+
 ---
 
 ### 🔁 Step 7: Run and Verify Pipeline
 1. Go to deploy-job
 2. Click "Build Now"
 3. Check Console Output
+
+![Task 81 - Jenkins Multistage Pipeline.12](images_12/Day-81.12.png)
+![Task 81 - Jenkins Multistage Pipeline.13](images_12/Day-81.13.png)
+![Task 81 - Jenkins Multistage Pipeline.14](images_12/Day-81.14.png)
+
 4. Check the App
 5. Verify content shows "Welcome to xFusionCorp Industries"
+
+![Task 81 - Jenkins Multistage Pipeline.15](images_12/Day-81.15.png)
+
+---
+
+## 🎯 Task Completed
+
+| ✅  | Item                                                    |
+| -- | ------------------------------------------------------- |
+| ✔️ | Passwordless sudo configured                            |
+| ✔️ | Jenkins plugins installed                               |
+| ✔️ | Credentials for natasha added                           |
+| ✔️ | Repository updated successfully                         |
+| ✔️ | Pipeline `deploy-job` created with Deploy & Test stages |
+| ✔️ | Website deployed successfully                           |
+| ✔️ | Verified content via Load Balancer URL                  |
