@@ -63,7 +63,7 @@ Jenkins
   Password: Adm!n321
   ```
 
-![Task 80 - Jenkins Chained Builds.1](images_12/Day-79.1.png)
+![Task 81 - Jenkins Multistage Pipeline.1](images_12/Day-81.1.png)
 
 Gitea
 - URL: Click the Gitea button on top bar
@@ -74,7 +74,7 @@ Gitea
   ```
 - check if there's `web` repo
 
-![Task 80 - Jenkins Chained Builds.1](images_12/Day-79.2.png)
+![Task 81 - Jenkins Multistage Pipeline.1](images_12/Day-81.2.png)
 
 ---
 
@@ -92,10 +92,190 @@ Manage Jenkins → Plug-ins
 - Git
 - Credentials
 - CloudBees
-- Gitea
-- Gitea check
 - Publish Over SSH
+- Pipeline
+- Pipeline Steps Plugin
   
 3. Restart Jenkins after installation
 
-![Task 80 - Jenkins Chained Builds.3](images_12/Day-80.3.png)
+![Task 81 - Jenkins Multistage Pipeline.3](images_12/Day-81.3.png)
+
+---
+
+### 🔁 Step 4: Verify Jenkins Environment
+
+1. Login to Jenkins
+```bash
+ssh jenkins@jenkins
+```
+pw: j@rv!s
+
+2. Check if sshpass is installed
+```bash
+sshpass -V
+```
+> Installed already
+
+if not,
+```bash
+sudo yum install sshpass -y
+```
+
+---
+
+### 🔁 Step 5: Update Repo Content
+
+#### Method 1 using Gitea UI
+
+1. Go back to Gitea
+2. Navigate to sarah/web repository
+3. Click on index.html file
+4. Click Edit button
+5. Change content to: "Welcome to xFusionCorp Industries"
+6. Commit changes with message: "Update welcome message"
+
+
+#### Method 2 using CLI (SSH to Storage Server Nataasha)
+
+```bash
+ssh natasha@ststor01
+sudo chown natasha:natasha /var/www/html/index.html
+sudo chmod 755 /var/www/html/index.html
+cd /var/www/html
+echo "Welcome to xFusionCorp Industries" | sudo tee index.html
+sudo chown natasha:natasha index.html
+sudo chmod 755 index.html
+git add index.html
+git commit -m "Update welcome message"
+git push origin master
+```
+
+error: failed to push some refs to 'http://git.stratos.xfusioncorp.com/sarah/web.git'
+> This error means that the remote repository has new commits that your local branch doesn’t have. To fix it safely, you need to pull the remote changes first, merge them, and then push again.
+
+Step 1 (Fetch and merge the remote changes):
+```bash
+git pull origin master --rebase
+```
+
+Step 2 (Push your changes again):
+```bash
+git push origin master
+```
+
+---
+
+### 🔁 Step 6: Create a Pipeline Job
+
+1. Go Jenkins: New Item → "deploy-job" → Pipeline → OK
+2. Under Definition: Pipeline script
+3. Copy and paste the pipeline script below
+```script
+pipeline {
+    agent any
+
+    stages {
+        stage('Deploy') {
+            steps {
+                echo 'Deploying...'
+                
+                // Clone the repository (no credentials needed for public repo)
+                git url: 'http://git.stratos.xfusioncorp.com/sarah/web.git', branch: 'master'
+                
+                // Copy files to storage server using shell commands
+                sh '''
+                    echo "Deploying files to storage server..."
+                    
+                    # Method 1: If Jenkins can access shared storage directly
+                    if [ -d "/var/www/html" ] && [ -w "/var/www/html" ]; then
+                        echo "Direct access to shared storage"
+                        cp -r * /var/www/html/
+                        echo "Direct copy completed"
+                    else
+                        # Method 2: Using SCP 
+                        echo "Using SCP to transfer files"
+                        
+                        # First, verify what content we have locally
+                        echo "DEBUG: Local index.html content:"
+                        cat index.html || echo "No index.html found locally"
+                        
+                        # Transfer files
+                        sshpass -p "Bl@kW" scp -o StrictHostKeyChecking=no -r index.html natasha@ststor01:/var/www/html/
+                        
+                        # Verify content on remote server
+                        echo "DEBUG: Remote index.html content:"
+                        sshpass -p "Bl@kW" ssh -o StrictHostKeyChecking=no natasha@ststor01 "cat /var/www/html/index.html"
+                        
+                        # Fix permissions using echo to pass password to sudo
+                        echo "Bl@kW" | sshpass -p "Bl@kW" ssh -o StrictHostKeyChecking=no natasha@ststor01 "sudo -S chown -R apache:apache /var/www/html 2>/dev/null || true"
+                        echo "Bl@kW" | sshpass -p "Bl@kW" ssh -o StrictHostKeyChecking=no natasha@ststor01 "sudo -S chmod -R 755 /var/www/html 2>/dev/null || true"
+                        
+                        echo "SCP deployment completed"
+                    fi
+                    
+                    echo "Deployment completed successfully"
+                '''
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo 'Testing deployment...'
+                
+                script {
+                    def expectedContent = 'Welcome to xFusionCorp Industries'
+                    
+                    // Wait a moment for deployment to propagate
+                    sleep(5)
+                    
+                    try {
+                        // Test Load Balancer URL
+                        def lbResponse = sh(script: 'curl -s http://stlb01:8091/', returnStdout: true).trim()
+                        echo "DEBUG: Load balancer response: ${lbResponse}"
+                        echo "DEBUG: Expected content: ${expectedContent}"
+                        
+                        if (!lbResponse.contains(expectedContent)) {
+                            error("Load balancer test failed. Expected content '${expectedContent}' not found in response: '${lbResponse}'")
+                        }
+                        echo " Load balancer test passed"
+                        
+                        // Test individual app servers
+                        ['stapp01:8080', 'stapp02:8080', 'stapp03:8080'].each { server ->
+                            def response = sh(script: "curl -s http://${server}/", returnStdout: true).trim()
+                            if (!response.contains(expectedContent)) {
+                                error("App server ${server} test failed")
+                            }
+                            echo " ${server} test passed"
+                        }
+                        
+                        echo 'All tests passed successfully!'
+                        
+                    } catch (Exception e) {
+                        error("Test stage failed: ${e.getMessage()}")
+                    }
+                }
+            }
+        }
+    }
+    
+    post {
+        success {
+            echo 'Pipeline completed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed. Check logs for details.'
+        }
+    }
+}
+```
+
+4. Save the job
+
+---
+
+### 🔁 Step 7: Run and Verify Pipeline
+1. Go to deploy-job
+2. Click "Build Now"
+3. Check Console Output
+4. Check the App
+5. Verify content shows "Welcome to xFusionCorp Industries"
